@@ -1,0 +1,57 @@
+{
+  "id" : "rain-on-skylight",
+  "layers" : [
+    {
+      "colorHex" : "#4FACFE",
+      "id" : "E8397B66-939D-46A6-9DAC-7050C9229AB6",
+      "motionScript" : "expr x=1.2*sin(t*0.5); y=1.8+0.2*sin(t*1.2); z=1.2*cos(t*0.5)",
+      "name" : "Skylight Raindrops",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "granularImpulse" : {
+              "density" : 24,
+              "type" : "raindrop"
+            }
+          }
+        }
+      },
+      "volume" : 0.75
+    },
+    {
+      "colorHex" : "#FF416C",
+      "id" : "AC15BB30-1AB7-42A0-8ACA-026CABC03E48",
+      "motionScript" : "static x=1.6 y=-0.4 z=0.9",
+      "name" : "Hearthside Embers",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "granularImpulse" : {
+              "density" : 16,
+              "type" : "campfire"
+            }
+          }
+        }
+      },
+      "volume" : 0.7
+    },
+    {
+      "colorHex" : "#434343",
+      "id" : "3F2EF819-612B-43F3-B12A-089C50FFF168",
+      "motionScript" : "flyby start=[-10, 2, 8] end=[10, 1, 8] duration=5.0 pause=3.0",
+      "name" : "Rolling Thunder",
+      "source" : {
+        "audioFile" : {
+          "interval" : 8,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/distant_thunder.wav"
+        }
+      },
+      "volume" : 0.65
+    }
+  ],
+  "moodDescription" : "Curled up under a glass skylight hearing raindrops tap above your head, an ember-crackling fire by your side, and rolling thunder sweeping the horizon.",
+  "reverbPreset" : "Medium Room",
+  "subtitle" : "Cozy fireside sanctuary & rolling thunder",
+  "title" : "Rain on the Skylight"
+}

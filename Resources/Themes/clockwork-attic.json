@@ -1,0 +1,57 @@
+{
+  "id" : "clockwork-attic",
+  "layers" : [
+    {
+      "colorHex" : "#B78628",
+      "id" : "94FF24C8-C0A0-49E3-95C3-9F604490FC02",
+      "motionScript" : "static x=-2.0 y=0.0 z=0.6",
+      "name" : "Grandfather Clock",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/clock_tick.wav"
+        }
+      },
+      "volume" : 0.6
+    },
+    {
+      "colorHex" : "#FCCF31",
+      "id" : "CA9AB79A-5705-4E2B-8F09-FA1E8D7A42DC",
+      "motionScript" : "pendulum length=1.8 angle=42 freq=0.9 axis=x",
+      "name" : "Swinging Pocket Watch",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "granularImpulse" : {
+              "density" : 2,
+              "type" : "clocktick"
+            }
+          }
+        }
+      },
+      "volume" : 0.75
+    },
+    {
+      "colorHex" : "#F5576C",
+      "id" : "F4E40FFA-E73E-4830-8842-463A2C274DD3",
+      "motionScript" : "orbit radius=1.9 speed=0.45 height=0.1 phase=0.8",
+      "name" : "Automaton Music Box",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "pluckedString" : {
+              "baseFreq" : 523.25,
+              "interval" : 1.6
+            }
+          }
+        }
+      },
+      "volume" : 0.7
+    }
+  ],
+  "moodDescription" : "Step into an eccentric horologist’s attic where pocket watches swing past your face, grandfather clocks chime in corners, and musical automatons circle.",
+  "reverbPreset" : "Small Room",
+  "subtitle" : "Antique escapements & swinging pendulum",
+  "title" : "Clockwork Attic"
+}

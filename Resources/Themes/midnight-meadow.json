@@ -1,0 +1,76 @@
+{
+  "id" : "midnight-meadow",
+  "layers" : [
+    {
+      "colorHex" : "#38EF7D",
+      "id" : "4F42BBDB-6FFF-4E23-B642-18C8C8E2DFCA",
+      "motionScript" : "wander radius=2.5 speed=0.35 jitter=0.2",
+      "name" : "Midnight Breeze",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "filteredNoise" : {
+              "cutoff" : 650,
+              "resonance" : 2.2,
+              "type" : "pink"
+            }
+          }
+        }
+      },
+      "volume" : 0.45
+    },
+    {
+      "colorHex" : "#FFD200",
+      "id" : "0F53FB3F-D878-4C4E-B62D-E6D11E11516C",
+      "motionScript" : "lissajous xR=2.2 yR=0.7 zR=1.8 xF=0.4 yF=0.7 zF=0.3",
+      "name" : "Wandering Firefly",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "fmBell" : {
+              "baseFreq" : 440,
+              "interval" : 3.2,
+              "modRatio" : 2.756
+            }
+          }
+        }
+      },
+      "volume" : 0.75
+    },
+    {
+      "colorHex" : "#00E5FF",
+      "id" : "251853D2-F946-41F9-B589-8D9CCEB3AA32",
+      "motionScript" : "orbit radius=2.8 speed=0.18 height=0.3 phase=1.5",
+      "name" : "Meadow Harp",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "pluckedString" : {
+              "baseFreq" : 220,
+              "interval" : 2.8
+            }
+          }
+        }
+      },
+      "volume" : 0.65
+    },
+    {
+      "colorHex" : "#8AE234",
+      "id" : "E9E96ACD-3F2B-49A3-A969-8EC262858F40",
+      "motionScript" : "static x=-2.2 y=-0.6 z=1.2",
+      "name" : "Field Crickets",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/cricket_chirp.wav"
+        }
+      },
+      "volume" : 0.55
+    }
+  ],
+  "moodDescription" : "A serene nocturnal meadow where soft breezes drift past your ears, crickets rustle in the grass, and a glowing musical firefly orbits overhead.",
+  "reverbPreset" : "Large Chamber",
+  "subtitle" : "Bioluminescent crickets & wandering fireflies",
+  "title" : "Midnight Meadow"
+}

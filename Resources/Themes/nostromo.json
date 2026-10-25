@@ -1,0 +1,97 @@
+{
+  "id" : "nostromo",
+  "layers" : [
+    {
+      "colorHex" : "#FFE600",
+      "id" : "08387969-E344-40AA-9830-E5B25ACECD7A",
+      "motionScript" : "static x=0.0 y=0.15 z=-1.2",
+      "name" : "MU-TH-UR Terminal",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/nostromo_drive_seek.wav"
+        }
+      },
+      "volume" : 0.85
+    },
+    {
+      "colorHex" : "#00F0FF",
+      "id" : "EE565702-7265-4EF9-96C9-50FFB20C8F71",
+      "motionScript" : "expr x=1.8+0.06*sin(0.4*t); y=-0.1; z=-1.4+0.06*cos(0.5*t)",
+      "name" : "Drive Rack Spindles",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/nostromo_drive_spinup.wav"
+        }
+      },
+      "volume" : 0.75
+    },
+    {
+      "colorHex" : "#FF9900",
+      "id" : "1C73A97B-B1AF-4FD1-BA16-642A1E04D517",
+      "motionScript" : "static x=-0.8 y=0.35 z=-1.3",
+      "name" : "MU-TH-UR Query Beeps",
+      "source" : {
+        "audioFile" : {
+          "interval" : 5.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/nostromo_muthur_beeps.wav"
+        }
+      },
+      "volume" : 0.7
+    },
+    {
+      "colorHex" : "#FF3B30",
+      "id" : "4D72FCF6-B3BA-41C4-8031-CB442DD78005",
+      "motionScript" : "static x=0.0 y=-1.8 z=0.0",
+      "name" : "Reactor Floor Rumble",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/nostromo_hull_rumble.wav"
+        }
+      },
+      "volume" : 0.8
+    },
+    {
+      "colorHex" : "#34C759",
+      "id" : "E8FB25E4-C7A2-4CA1-9482-7E39B09FA6CB",
+      "motionScript" : "static x=0.0 y=2.2 z=-0.4",
+      "name" : "Overhead Coolant Duct",
+      "source" : {
+        "audioFile" : {
+          "interval" : 7.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/nostromo_coolant_vent.wav"
+        }
+      },
+      "volume" : 0.65
+    },
+    {
+      "colorHex" : "#5AC8FA",
+      "id" : "DF68B123-3C2B-4618-A00C-30505CB143EA",
+      "motionScript" : "flyby start=[-2.2, 0.3, -1.1] end=[2.2, 0.3, -1.1] duration=8.0 pause=4.0",
+      "name" : "Avionics Scanner Sweep",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "fmBell" : {
+              "baseFreq" : 940,
+              "interval" : 4,
+              "modRatio" : 1
+            }
+          }
+        }
+      },
+      "volume" : 0.5
+    }
+  ],
+  "moodDescription" : "Echoing industrial corridors of the Nostromo: chunky Winchester drive head seeks, MU-TH-UR 6000 data chirps, tape spindles spinning up, and the deep subterranean vibration of the fusion engines through the metal deck plates.",
+  "reverbPreset" : "Large Chamber",
+  "subtitle" : "USCSS Commercial Freighter 180286 • MU-TH-UR 6000",
+  "title" : "Nostromo"
+}

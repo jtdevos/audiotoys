@@ -1,0 +1,62 @@
+{
+  "id" : "quantum-voyage",
+  "layers" : [
+    {
+      "colorHex" : "#7F00FF",
+      "id" : "A566224F-AF4F-4E2C-B5F9-83F10216EC05",
+      "motionScript" : "static x=0 y=-0.8 z=0",
+      "name" : "Warp Core",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "subtractiveDrone" : {
+              "detune" : 12,
+              "fundamental" : 58
+            }
+          }
+        }
+      },
+      "volume" : 0.65
+    },
+    {
+      "colorHex" : "#00F260",
+      "id" : "322D191A-06C5-4266-B7CA-3CD836C925E8",
+      "motionScript" : "flyby start=[-7, 0.4, 1.6] end=[7, -0.4, 1.6] duration=3.5 pause=1.5",
+      "name" : "Ion Probe Flyby",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "filteredNoise" : {
+              "cutoff" : 1400,
+              "resonance" : 4.5,
+              "type" : "white"
+            }
+          }
+        }
+      },
+      "volume" : 0.8
+    },
+    {
+      "colorHex" : "#0575E6",
+      "id" : "0CD770D4-B833-4A1A-8935-04C2D29252F9",
+      "motionScript" : "spiral min=0.5 max=3.5 speed=0.45 vSpeed=0.25 vAmp=0.8",
+      "name" : "Tachyon Beacon",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "fmBell" : {
+              "baseFreq" : 880,
+              "interval" : 1.8,
+              "modRatio" : 3.82
+            }
+          }
+        }
+      },
+      "volume" : 0.7
+    }
+  ],
+  "moodDescription" : "An exhilarating sonic journey through an exotic energy field with warp drones, ion probes darting by, and spiraling tachyon signals.",
+  "reverbPreset" : "Plate Reverb",
+  "subtitle" : "Sci-fi tachyon sweeps & orbital probes",
+  "title" : "Quantum Voyage"
+}

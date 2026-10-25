@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Swift Package Manager & Build Artifacts
+/.build/
+/.cache/
+/Packages/
+/.swiftpm/
+/audiotoys
+/AudioToys.app/
+
+# Xcode
+xcuserdata/
+DerivedData/
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+build/
+
+# Credentials & Environment
+.netrc
+.env
+.env.*
+

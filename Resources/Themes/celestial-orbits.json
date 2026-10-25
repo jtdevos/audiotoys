@@ -1,0 +1,79 @@
+{
+  "id" : "celestial-orbits",
+  "layers" : [
+    {
+      "colorHex" : "#6A11CB",
+      "id" : "0A3B7C3C-BBE4-41C4-A603-F5C49AB5401B",
+      "motionScript" : "static x=0.0 y=-0.5 z=0.0",
+      "name" : "Deep Cosmic Drone",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "subtractiveDrone" : {
+              "detune" : 7,
+              "fundamental" : 65.4
+            }
+          }
+        }
+      },
+      "volume" : 0.55
+    },
+    {
+      "colorHex" : "#F7971E",
+      "id" : "61BE40C2-4E65-441D-8F89-DFF866998A29",
+      "motionScript" : "orbit radius=1.6 speed=0.3 height=0.0 phase=0.0",
+      "name" : "Tibetan Singing Bowl",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "fmBell" : {
+              "baseFreq" : 261.6,
+              "interval" : 4.5,
+              "modRatio" : 1.414
+            }
+          }
+        }
+      },
+      "volume" : 0.8
+    },
+    {
+      "colorHex" : "#00F2FE",
+      "id" : "BE73C94C-C4A1-4053-8572-7B6E12E98A47",
+      "motionScript" : "orbit radius=2.7 speed=-0.22 height=0.8 phase=3.14",
+      "name" : "Crystalline Chimes",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "fmBell" : {
+              "baseFreq" : 587.3,
+              "interval" : 2.6,
+              "modRatio" : 3.1415
+            }
+          }
+        }
+      },
+      "volume" : 0.7
+    },
+    {
+      "colorHex" : "#FA709A",
+      "id" : "0ADDA209-0B52-4984-BE23-B1018384B519",
+      "motionScript" : "spiral min=0.8 max=3.2 speed=0.25 vSpeed=0.15 vAmp=0.6",
+      "name" : "Stardust Harp",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "pluckedString" : {
+              "baseFreq" : 330,
+              "interval" : 2.2
+            }
+          }
+        }
+      },
+      "volume" : 0.65
+    }
+  ],
+  "moodDescription" : "Float in deep space encircled by singing bowls, crystalline harmonic rings, and deep sub-space vibrations.",
+  "reverbPreset" : "Cathedral",
+  "subtitle" : "Harmonic planetary spheres & stardust harp",
+  "title" : "Celestial Orbits"
+}
