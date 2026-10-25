@@ -6,7 +6,7 @@ AudioToys is built in **Swift** using Apple's native **AVFoundation** (`AVAudioE
 
 ---
 
-## ✨ What's New in the `experimental/do-over` Spike
+## ✨ Key Features & Architecture
 
 1. **Real Close-Mic Foley & Field Recordings (`PDsounds.org` / CC0)**:
    - Replaced synthetic sine-wave placeholders with 28 mastered, denoised, EQ-sculpted 44.1kHz mono acoustic recordings (`Resources/Samples/`): real Japanese steel scissors snipping, cordless rotary hair clippers, atomizer water mist spritzes, fine-tooth comb bristles, badger-hair neck brushes, scalp fingertip massage, graphite pencil sketching, book page turns, hardwood tapping, bamboo seed rainsticks, sleeping cat purrs, rain on glass windows, crackling hearth wood fires, woodland brooks, Tibetan singing bowls, Koshi wind chimes, antique clocks, and mechanical hard drive head seeks.
