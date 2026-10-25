@@ -2,78 +2,71 @@
   "id" : "celestial-orbits",
   "layers" : [
     {
-      "colorHex" : "#6A11CB",
-      "id" : "0A3B7C3C-BBE4-41C4-A603-F5C49AB5401B",
-      "motionScript" : "static x=0.0 y=-0.5 z=0.0",
-      "name" : "Deep Cosmic Drone",
+      "colorHex" : "#F7971E",
+      "id" : "72336C90-7D5D-4DF9-B8C4-C050AC37E6B9",
+      "motionScript" : "orbit radius=0.48 speed=0.14 height=0.05 phase=0.0",
+      "name" : "Tibetan Singing Bowl (4.5\")",
       "source" : {
-        "procedural" : {
-          "_0" : {
-            "subtractiveDrone" : {
-              "detune" : 7,
-              "fundamental" : 65.4
-            }
-          }
+        "audioFile" : {
+          "interval" : 9,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/singing_bowl.wav"
         }
       },
-      "volume" : 0.55
+      "volume" : 0.84
     },
     {
-      "colorHex" : "#F7971E",
-      "id" : "61BE40C2-4E65-441D-8F89-DFF866998A29",
-      "motionScript" : "orbit radius=1.6 speed=0.3 height=0.0 phase=0.0",
-      "name" : "Tibetan Singing Bowl",
+      "colorHex" : "#00F2FE",
+      "id" : "09EFC177-2F36-4B94-9853-03283EB99560",
+      "motionScript" : "orbit radius=0.56 speed=-0.11 height=0.18 phase=3.14",
+      "name" : "Bamboo Koshi Wind Chimes",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/koshi_chimes.wav"
+        }
+      },
+      "volume" : 0.8
+    },
+    {
+      "colorHex" : "#FA709A",
+      "id" : "8C4D3B33-0C87-4E35-BE97-C76EC6EA00F4",
+      "motionScript" : "spiral min=0.35 max=0.95 speed=0.15 vSpeed=0.12 vAmp=0.25",
+      "name" : "Modal Bronze Harmonics",
       "source" : {
         "procedural" : {
           "_0" : {
             "fmBell" : {
               "baseFreq" : 261.6,
               "interval" : 4.5,
-              "modRatio" : 1.414
-            }
-          }
-        }
-      },
-      "volume" : 0.8
-    },
-    {
-      "colorHex" : "#00F2FE",
-      "id" : "BE73C94C-C4A1-4053-8572-7B6E12E98A47",
-      "motionScript" : "orbit radius=2.7 speed=-0.22 height=0.8 phase=3.14",
-      "name" : "Crystalline Chimes",
-      "source" : {
-        "procedural" : {
-          "_0" : {
-            "fmBell" : {
-              "baseFreq" : 587.3,
-              "interval" : 2.6,
-              "modRatio" : 3.1415
-            }
-          }
-        }
-      },
-      "volume" : 0.7
-    },
-    {
-      "colorHex" : "#FA709A",
-      "id" : "0ADDA209-0B52-4984-BE23-B1018384B519",
-      "motionScript" : "spiral min=0.8 max=3.2 speed=0.25 vSpeed=0.15 vAmp=0.6",
-      "name" : "Stardust Harp",
-      "source" : {
-        "procedural" : {
-          "_0" : {
-            "pluckedString" : {
-              "baseFreq" : 330,
-              "interval" : 2.2
+              "modRatio" : 2.756
             }
           }
         }
       },
       "volume" : 0.65
+    },
+    {
+      "colorHex" : "#6A11CB",
+      "id" : "8D11CDDC-1615-4756-9280-72B5F69D8B7F",
+      "motionScript" : "static x=0.0 y=-0.35 z=-0.40",
+      "name" : "Warm Harmonium Drone",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "subtractiveDrone" : {
+              "detune" : 5.5,
+              "fundamental" : 65.4
+            }
+          }
+        }
+      },
+      "volume" : 0.52
     }
   ],
-  "moodDescription" : "Float in deep space encircled by singing bowls, crystalline harmonic rings, and deep sub-space vibrations.",
-  "reverbPreset" : "Cathedral",
-  "subtitle" : "Harmonic planetary spheres & stardust harp",
-  "title" : "Celestial Orbits"
+  "moodDescription" : "Surrounded by authentic acoustic resonance: a real 4.5-inch hand-hammered Tibetan singing bowl and bamboo Koshi wind chimes orbit gently around your head over a warm acoustic harmonium drone.",
+  "reverbPreset" : "Large Chamber",
+  "subtitle" : "Hand-Hammered Singing Bowl, Koshi Chimes & Harmonium",
+  "title" : "Tibetan Sanctuary"
 }

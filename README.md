@@ -1,31 +1,25 @@
-# 🎧 AudioToys
+# 🎧 AudioToys — Binaural ASMR & 3D Spatial Audio Studio
 
-> Fun, whimsical, minimalist 3D spatial audio toys designed for headphones and AirPods Pro on macOS.
+> Grounded, intimate, close-mic'd 3D spatial audio & ASMR soundscapes designed for AirPods Pro and headphones on macOS.
 
-AudioToys is built in **Swift** using Apple's native **AVFoundation** (`AVAudioEngine`, `AVAudioEnvironmentNode`) with high-definition **HRTF (Head-Related Transfer Function)** binaural spatial audio rendering.
+AudioToys is built in **Swift** using Apple's native **AVFoundation** (`AVAudioEngine`, `AVAudioEnvironmentNode`) with **`.HRTFHQ` (High-Quality Head-Related Transfer Function)** binaural rendering, a **5-Stage Per-Layer Acoustic DSP Filter Chain**, and **Mastered Close-Mic Public-Domain Foley & Field Recordings**.
 
 ---
 
-## ✨ Features & Capabilities
+## ✨ What's New in the `experimental/do-over` Spike
 
-- **Real-Time 3D Spatial Audio**: Utilizes Apple's native `.HRTFHQ` algorithm optimized specifically for AirPods and headphones. Sounds emanate from exact 3D coordinates $(x, y, z)$ in meters around your head.
-- **Layered Audio**: Multi-source polyphonic audio combining ambient background beds, orbiting procedural synthesis, and triggered audio file samples.
-- **Procedural Audio Engine**: Sample-accurate real-time DSP synthesis running on high-priority audio threads:
-  - **FM Bell / Bowl Voice**: Crystalline singing bowls and glass chimes with harmonic/inharmonic frequency modulation.
-  - **Karplus-Strong Plucked Strings**: Tactile physical modeling of resonant harps, kotos, and kalimbas.
-  - **Filtered Noise Generator**: Pink/brown/white noise with resonant biquad filtering for breathing breezes and ocean surf.
-  - **Granular Impulses**: Stochastic Poisson pulse generation for raindrops tapping surfaces, campfire embers, and clock ticks.
-  - **Subtractive Drone**: Detuned multi-oscillator warm analog bass and cosmic synth pads.
-- **Audio File & Sample Playback**: Native WAV/AIFF/CAF/MP3 audio playback with continuous looping or periodic triggers, fully spatialized in 3D space. Includes built-in algorithmic reference sample generators.
-- **Spatial Motion Scripting Language (Stretch Goal)**:
-  - Programmatic trajectory controllers: `orbit`, `spiral`, `lissajous`, `pendulum`, `wander`, `flyby`, `static`.
-  - Custom mathematical expression parsing: e.g. `expr x=2.5*cos(0.6*t); y=0.4*sin(1.2*t); z=2.0*sin(0.6*t)` with variable `t` (elapsed seconds), operators, and trigonometric functions.
-- **Minimalist UI**:
-  - **3D Spatial Radar**: Concentric range rings (1m, 2m, 3m, 4m), central listener glyph with AirPods indicator, animated breadcrumb trails, and glowing source nodes.
-  - **Tactile Drag-and-Drop**: Click and drag any audio source on the radar to move it in real-time, hearing the audio instantly pan and track across your ears.
-  - **Live Script Inspector**: Inspect and live-edit motion scripts with 1-click preset buttons.
-  - **Reverb Environment Selector**: Cathedral, Large Chamber, Medium Room, Small Room, Plate Reverb.
-  - **Terminal Mode**: Live ANSI terminal radar screen with real-time coordinate telemetry.
+1. **Real Close-Mic Foley & Field Recordings (`PDsounds.org` / CC0)**:
+   - Replaced synthetic sine-wave placeholders with 28 mastered, denoised, EQ-sculpted 44.1kHz mono acoustic recordings (`Resources/Samples/`): real Japanese steel scissors snipping, cordless rotary hair clippers, atomizer water mist spritzes, fine-tooth comb bristles, badger-hair neck brushes, scalp fingertip massage, graphite pencil sketching, book page turns, hardwood tapping, bamboo seed rainsticks, sleeping cat purrs, rain on glass windows, crackling hearth wood fires, woodland brooks, Tibetan singing bowls, Koshi wind chimes, antique clocks, and mechanical hard drive head seeks.
+2. **Real-Time 5-Stage Per-Layer Acoustic DSP Filter Chain (`AcousticFilterChain.swift`)**:
+   - **Stage 1 — High-Pass Sub-Rumble Filter**: 2nd-order Butterworth HPF tailored per material profile (`28 Hz – 135 Hz`).
+   - **Stage 2 — Dynamic Binaural Proximity Bass Shelf (`165 Hz`)**: Automatically boosts warm near-field body resonance (up to `+7.5 dB`) as a sound source moves within `12cm – 85cm` of your ears—recreating the physical acoustic proximity effect of binaural 3Dio/KU100 ASMR microphones.
+   - **Stage 3 — Material Formant Parametric EQ**: Sculpted profiles for `Crisp Steel Shears`, `Warm Rotary Clippers`, `Velvet Brush & Comb`, `Intimate ASMR`, `Resonant Wood & Hearth`, `Crystalline Harmonic`, `Deep Subterranean`, and `Natural Studio Foley`.
+   - **Stage 4 — Near-Field Air Exciter (`7.5 kHz`) + Pinna Front/Back Shadow & Distance Air Absorption**: Enhances crisp micro-transients when close to the ear canal while casting a natural pinna high-frequency shadow (`-2.8 dB` above `5.5 kHz`) when sources move behind the nape of your neck (`+Z`), eliminating front-back headphone ambiguity.
+   - **Stage 5 — Micro-Transient Shaper & Warm Triode/Tape Soft-Clipper (`tanh`)**: Brings out tactile scissor snips, bristle clicks, and ember pops without harsh digital clipping.
+3. **Humanized Organic Sample Streamer (`OrganicSampleStreamer.swift`)**:
+   - 4-point Hermite cubic-interpolated varispeed (`±4.5%` organic micro-pitch variation per trigger/pass), multi-slice round-robin windowing, and seamless equal-power cosine crossfaded looping eliminate loop seams and "machine-gun" sample repetition.
+4. **Grounded Physical & Modal Synthesis (`ProceduralSynthesis.swift`)**:
+   - Dispersive metallic waveguide modes for detail barber shears, 8-mode inharmonic modal resonators with natural beating doublets for singing bowls, cedar-soundboard coupled Karplus-Strong strings, and Velvet-Noise acoustic impact models.
 
 ---
 
@@ -34,156 +28,43 @@ AudioToys is built in **Swift** using Apple's native **AVFoundation** (`AVAudioE
 ### 1. Launch the Native macOS GUI
 
 ```bash
-# Build and run the macOS app
+# Build and launch AudioToys.app
 make run
-# Or directly run the binary:
+# Or run the compiled binary directly:
 ./audiotoys
 ```
 
-### 2. Run in the Terminal (Interactive ANSI Radar)
+### 2. Run in the Terminal (Live ANSI Near-Field Radar)
 
 ```bash
-# List all available themes
+# List all themes and layers
 ./audiotoys list
 
-# Play any theme in your terminal:
-./audiotoys play nostromo
+# Play the Barber Shop Haircut ASMR theme in your terminal:
+./audiotoys play barber-shop
+
+# Or play any other theme:
+./audiotoys play tactile-study
+./audiotoys play rain-on-skylight
 ./audiotoys play midnight-meadow
 ./audiotoys play celestial-orbits
-./audiotoys play rain-on-skylight
 ./audiotoys play clockwork-attic
-./audiotoys play quantum-voyage
+./audiotoys play nostromo
 ```
 
 ---
 
-## 🎨 Built-in Themes
+## 💈 Built-in Spatial & ASMR Themes
 
-| Theme ID | Title | Description | Key Layers |
+| Theme ID | Title | Description | Key Layers & DSP Profiles |
 | :--- | :--- | :--- | :--- |
-| `nostromo` | **Nostromo** | USCSS Commercial Freighter 180286 • MU-TH-UR 6000 | Front Winchester drive seeks, tape spindle spin-up rack, MU-TH-UR query chirps, sub-deck fusion rumble, overhead coolant vents, avionics sweep |
-| `midnight-meadow` | **Midnight Meadow** | Bioluminescent crickets & wandering fireflies | Pink noise breeze, FM bell firefly (Lissajous), meadow harp, spatial field crickets |
-| `celestial-orbits` | **Celestial Orbits** | Harmonic planetary spheres & stardust harp | Cosmic sub-drone, Tibetan singing bowl (orbit), crystal chimes (counter-orbit), stardust harp (spiral) |
-| `rain-on-skylight` | **Rain on the Skylight** | Cozy fireside sanctuary & rolling thunder | Granular rain on overhead glass, hearthside ember crackles, sweeping horizon thunder |
-| `clockwork-attic` | **Clockwork Attic** | Antique escapements & swinging pendulum | Grandfather clock (static left), pocket watch (pendulum), automaton music box (orbit) |
-| `quantum-voyage` | **Quantum Voyage** | Sci-fi tachyon sweeps & orbital probes | Pulsing warp core drone, ion probe flybys, spiraling tachyon signal |
-
----
-
-## 📜 Motion Scripting Reference
-
-Audio sources can be scripted using simple commands or custom math expressions:
-
-### Trajectory Primitives
-
-- **Orbit**: Circle horizontally around the listener
-  ```
-  orbit radius=2.5 speed=0.4 height=0.2 phase=0.0
-  ```
-- **Spiral**: Inward and outward expanding/contracting spiral
-  ```
-  spiral min=0.5 max=3.5 speed=0.3 vSpeed=0.15 vAmp=0.8
-  ```
-- **Lissajous**: 3D harmonic knot / figure-eight motion (great for fireflies and spirits)
-  ```
-  lissajous xR=2.2 yR=0.7 zR=1.8 xF=0.4 yF=0.7 zF=0.3
-  ```
-- **Pendulum**: Swings back and forth like a pocket watch or chandelier
-  ```
-  pendulum length=2.0 angle=45 freq=0.8 axis=x
-  ```
-- **Wander**: Natural, smooth organic Brownian wandering
-  ```
-  wander radius=3.0 speed=0.4 jitter=0.2
-  ```
-- **Flyby**: Sweeps from a starting point past the listener to an ending point
-  ```
-  flyby start=[-7, 0.5, 2] end=[7, -0.5, 2] duration=4.0 pause=2.0
-  ```
-- **Static**: Fixed point in 3D space
-  ```
-  static x=1.5 y=0.0 z=-2.0
-  ```
-
-### Parametric Math Expressions
-
-Use the `expr` prefix to write custom functions of time `t`:
-```
-expr x = 2.5 * cos(0.6 * t); y = 0.4 * sin(1.2 * t); z = 2.0 * sin(0.6 * t)
-```
-Supported functions: `sin`, `cos`, `tan`, `abs`, `sqrt`, `noise`, `clamp`, `min`, `max`, and operators `+`, `-`, `*`, `/`, `^`.
-
----
-
-## 🛠️ Architecture
-
-```
-audiotoys/
-├── Makefile                          # Build, package, run, test targets
-├── AudioToys.app/                    # Packaged native macOS app bundle
-├── Sources/
-│   └── AudioToys/
-│       ├── Main.swift                # App launcher (handles CLI and GUI flags)
-│       ├── Audio/
-│       │   ├── SpatialAudioEngine.swift  # AVAudioEngine + AVAudioEnvironmentNode (HRTFHQ)
-│       │   ├── AudioLayer.swift          # Layer node binding, volume, trails
-│       │   ├── ProceduralSynthesis.swift # DSP: FM Bell, Karplus-Strong, Noise, Granular, Drone
-│       │   └── SampleGenerator.swift     # Built-in reference audio sample generator
-│       ├── Motion/
-│       │   ├── Vector3.swift             # 3D coordinates (meters relative to listener)
-│       │   ├── MotionScript.swift        # Trajectory parser and evaluator
-│       │   └── ExpressionEvaluator.swift # Recursive-descent math parser
-│       ├── Themes/
-│       │   ├── Theme.swift               # Declarative theme data model
-│       │   ├── ThemeLibrary.swift        # 5 built-in spatial themes
-│       │   └── ThemeLoader.swift         # JSON persistence and file loading
-│       ├── UI/
-│       │   ├── AudioToysApp.swift        # NSApplication & Main SwiftUI window
-│       │   ├── AppState.swift            # Central ObservableObject application state
-│       │   ├── RadarView.swift           # 3D Spatial Radar with real-time drag & trails
-│       │   ├── LayerListView.swift       # Layer controls: Mute, Solo, Volume, 3D readout
-│       │   ├── ScriptEditorView.swift    # Live trajectory script editor & preset pills
-│       │   ├── ThemePickerView.swift     # Horizontal theme pills & mood descriptions
-│       │   └── MinimalistTheme.swift     # Obsidian & neon glass styling
-│       └── CLI/
-│           └── TerminalUI.swift          # ANSI 3D Spatial Radar terminal runner
-└── Resources/
-    ├── Themes/                           # JSON theme definitions
-    └── Samples/                          # Reference audio samples (.wav)
-```
-
----
-
-## 💡 Custom Themes (JSON)
-
-Themes are automatically synced to `Resources/Themes/<id>.json`. You can drop your own JSON themes or edit existing ones directly.
-Example `Resources/Themes/my-custom-theme.json`:
-
-```json
-{
-  "id": "mystic-cave",
-  "title": "Mystic Cave",
-  "subtitle": "Echoing water drops & underground chimes",
-  "moodDescription": "A cavernous acoustic space with reverberant drops.",
-  "reverbPreset": "Cathedral",
-  "layers": [
-    {
-      "name": "Echo Drops",
-      "colorHex": "#00F0FF",
-      "volume": 0.8,
-      "source": {
-        "procedural": {
-          "granularImpulse": {
-            "type": "raindrop",
-            "density": 12.0
-          }
-        }
-      },
-      "motionScript": "wander radius=2.0 speed=0.3 jitter=0.2"
-    }
-  ]
-}
-```
+| `barber-shop` | **Barber Shop (ASMR)** | Binaural Haircut • Japanese Shears, Clippers, Mist & Brush | Japanese Steel Shears (`Crisp Steel Shears`), Detail Layering Snips, Cordless Rotary Clippers (`Warm Rotary Clippers`), Fine-Tooth Comb (`Velvet Brush & Comb`), Atomizer Water Mist (`Intimate ASMR`), Badger-Hair Neck Duster, Scalp Fingertip Massage |
+| `tactile-study` | **Tactile Study (ASMR)** | Close-Mic Foley • Graphite Sketching, Page Turns, Wood Taps & Purr | Graphite Pencil Sketching, Crisp Book Page Turns, Hollow Hardwood Tapping, Bamboo Seed Rainstick, Sleeping Cat Purr |
+| `rain-on-skylight` | **Rain on Skylight** | Real Window Rain, Crackling Hearth Wood & Rolling Thunder | Windowpane Rain Shower, Crackling Hearth Fire, Close Glass Droplets, Distant Horizon Thunder |
+| `midnight-meadow` | **Midnight Meadow** | Woodland Brook, Nocturnal Crickets & Cedar Harp | Mossy Woodland Brook, Nocturnal Cricket Choir, Gentle Pine Breeze, Cedar Soundboard Harp |
+| `celestial-orbits` | **Tibetan Sanctuary** | Hand-Hammered Singing Bowl, Koshi Chimes & Harmonium | 4.5" Tibetan Singing Bowl, Bamboo Koshi Wind Chimes, Modal Bronze Harmonics, Warm Harmonium Drone |
+| `clockwork-attic` | **Clockwork Attic** | Antique Escapements, Crown Winding & Mechanical Music Box | Close Pocket Watch Tick, Crown Ratchet Winding, Corner Grandfather Clock, Wound-Up Music Box |
+| `nostromo` | **Nostromo** | USCSS Commercial Freighter 180286 • Real Drive Seeks & Steam | Mechanical HDD Head Seeks, Platter Spindle Spin-Up, Pressurized Coolant Steam, Reactor Deck Sub-Rumble, MU-TH-UR Telemetry |
 
 ---
 

@@ -1,0 +1,79 @@
+{
+  "id" : "tactile-study",
+  "layers" : [
+    {
+      "colorHex" : "#FFE66D",
+      "id" : "47456222-F52F-438E-B260-FDE6824F7CB2",
+      "motionScript" : "expr x=0.26+0.05*sin(0.6*t); y=-0.05; z=-0.18+0.05*cos(0.5*t)",
+      "name" : "Graphite Pencil Sketching",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/pencil_sketching.wav"
+        }
+      },
+      "volume" : 0.85
+    },
+    {
+      "colorHex" : "#4ECDC4",
+      "id" : "DC094176-8037-4C2A-AE21-48E57D5F7DB4",
+      "motionScript" : "expr x=-0.28+0.06*sin(0.3*t); y=-0.04; z=-0.20",
+      "name" : "Crisp Book Page Turns",
+      "source" : {
+        "audioFile" : {
+          "interval" : 4.4,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/page_turning.wav"
+        }
+      },
+      "volume" : 0.82
+    },
+    {
+      "colorHex" : "#FF6B6B",
+      "id" : "16B96FED-2A5E-4EE4-BEDC-B218D161A8DD",
+      "motionScript" : "orbit radius=0.32 speed=0.14 height=-0.02 phase=2.1",
+      "name" : "Hollow Hardwood Tapping",
+      "source" : {
+        "audioFile" : {
+          "interval" : 5.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/wood_tapping.wav"
+        }
+      },
+      "volume" : 0.76
+    },
+    {
+      "colorHex" : "#00F5D4",
+      "id" : "BE796198-9E08-4C46-A2E2-4B59780D0649",
+      "motionScript" : "spiral min=0.25 max=0.65 speed=0.12 vSpeed=0.10 vAmp=0.18",
+      "name" : "Bamboo Seed Rainstick",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/rainstick_seeds.wav"
+        }
+      },
+      "volume" : 0.68
+    },
+    {
+      "colorHex" : "#C77DFF",
+      "id" : "659732F7-65B0-4EB7-9F7A-22C3586F8A9F",
+      "motionScript" : "static x=-0.22 y=-0.14 z=0.08",
+      "name" : "Sleeping Cat Purr",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/cat_purr.wav"
+        }
+      },
+      "volume" : 0.72
+    }
+  ],
+  "moodDescription" : "An intimate candlelit study designed for deep sensory tingles: a graphite pencil sketches on heavy cotton paper by your right ear, crisp book pages turn to your left, resonant hardwood blocks tap softly, a bamboo rainstick cascades, and a warm cat purrs on your shoulder.",
+  "reverbPreset" : "Small Room",
+  "subtitle" : "Close-Mic ASMR • Graphite Sketching, Page Turns, Wood Taps & Purr",
+  "title" : "Tactile Study"
+}

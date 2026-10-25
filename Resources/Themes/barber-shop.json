@@ -1,0 +1,110 @@
+{
+  "id" : "barber-shop",
+  "layers" : [
+    {
+      "colorHex" : "#00F5D4",
+      "id" : "588032B5-CD85-43FC-8251-6B4576B344B5",
+      "motionScript" : "orbit radius=0.26 speed=0.11 height=0.05 phase=0.0",
+      "name" : "Japanese Steel Shears",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/barber_scissors.wav"
+        }
+      },
+      "volume" : 0.88
+    },
+    {
+      "colorHex" : "#5AC8FA",
+      "id" : "4F72D729-1E39-456E-8CCF-9E9C16A75648",
+      "motionScript" : "lissajous xR=0.24 yR=0.08 zR=0.22 xF=0.16 yF=0.27 zF=0.13",
+      "name" : "Detail Layering Snips",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "granularImpulse" : {
+              "density" : 3.5,
+              "type" : "scissors"
+            }
+          }
+        }
+      },
+      "volume" : 0.68
+    },
+    {
+      "colorHex" : "#FF9F1C",
+      "id" : "848C02E5-B524-4781-B399-040CFC753533",
+      "motionScript" : "expr x=0.24*sin(0.19*t); y=-0.06+0.04*cos(0.31*t); z=0.18+0.12*cos(0.19*t)",
+      "name" : "Cordless Rotary Clippers",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/barber_clippers.wav"
+        }
+      },
+      "volume" : 0.72
+    },
+    {
+      "colorHex" : "#FFD166",
+      "id" : "3395141D-09F4-4823-BDA1-B617357AE083",
+      "motionScript" : "wander radius=0.25 speed=0.24 jitter=0.15",
+      "name" : "Fine-Tooth Barber Comb",
+      "source" : {
+        "audioFile" : {
+          "interval" : 2.8,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/barber_comb_bristles.wav"
+        }
+      },
+      "volume" : 0.78
+    },
+    {
+      "colorHex" : "#38EF7D",
+      "id" : "B43BF166-0A36-4EA0-9C81-A7E71D6126A7",
+      "motionScript" : "expr x=0.18*sin(0.15*t); y=0.20; z=-0.18+0.10*cos(0.15*t)",
+      "name" : "Atomizer Water Mist",
+      "source" : {
+        "audioFile" : {
+          "interval" : 6.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/barber_spray.wav"
+        }
+      },
+      "volume" : 0.76
+    },
+    {
+      "colorHex" : "#F72585",
+      "id" : "018CAA11-3705-4DAD-A340-0AC462FF9418",
+      "motionScript" : "expr x=0.22*sin(0.45*t); y=-0.12; z=0.20",
+      "name" : "Badger-Hair Neck Duster",
+      "source" : {
+        "audioFile" : {
+          "interval" : 5.2,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/barber_brush.wav"
+        }
+      },
+      "volume" : 0.74
+    },
+    {
+      "colorHex" : "#B5179E",
+      "id" : "80B96BED-F395-4FAF-BCAC-91E808904D3F",
+      "motionScript" : "orbit radius=0.19 speed=-0.15 height=0.12 phase=1.57",
+      "name" : "Scalp Fingertip Massage",
+      "source" : {
+        "audioFile" : {
+          "interval" : 6,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/barber_scalp_massage.wav"
+        }
+      },
+      "volume" : 0.58
+    }
+  ],
+  "moodDescription" : "Sink into a vintage leather barber chair. Crisp Japanese steel shears snip inches from your ears, cordless rotary clippers hum warmly around your nape with near-field proximity bass, a fine-tooth comb glides across your crown, cool water mist spritzes overhead, and a soft badger-hair brush dusts your collar.",
+  "reverbPreset" : "Small Room",
+  "subtitle" : "Binaural Haircut ASMR • Japanese Shears, Clippers, Mist & Brush",
+  "title" : "Barber Shop"
+}

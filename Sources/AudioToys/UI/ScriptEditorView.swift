@@ -8,7 +8,7 @@ public struct ScriptEditorView: View {
 
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("MOTION SCRIPT")
+                Text("MOTION & FILTER INSPECTOR")
                     .font(.system(size: 10, weight: .bold, design: .monospaced))
                     .foregroundColor(AudioToyStyle.textMuted)
 
@@ -16,6 +16,7 @@ public struct ScriptEditorView: View {
                     Text("• \(layer.name)")
                         .font(.system(size: 10, weight: .semibold, design: .monospaced))
                         .foregroundColor(Color(hex: layer.colorHex))
+                        .lineLimit(1)
                 }
 
                 Spacer()
@@ -25,7 +26,28 @@ public struct ScriptEditorView: View {
                     .foregroundColor(appState.isScriptError ? .red : AudioToyStyle.accentEmerald)
             }
 
-            if let _ = selectedLayer {
+            if let layer = selectedLayer {
+                // Acoustic Filter Profile Selector for Selected Layer
+                HStack(spacing: 6) {
+                    Text("DSP PROFILE:")
+                        .font(.system(size: 8.5, weight: .bold, design: .monospaced))
+                        .foregroundColor(AudioToyStyle.textSecondary)
+
+                    Picker("", selection: Binding(
+                        get: { layer.filterChain.profile },
+                        set: { newProfile in
+                            layer.filterChain.setProfile(newProfile)
+                            appState.objectWillChange.send()
+                        }
+                    )) {
+                        ForEach(AcousticProfile.allCases, id: \.self) { prof in
+                            Text(prof.rawValue).tag(prof)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .frame(maxWidth: .infinity)
+                }
+
                 // Script editor text area
                 HStack(spacing: 6) {
                     TextField("Enter motion script...", text: $appState.scriptEditorText)
@@ -54,17 +76,17 @@ public struct ScriptEditorView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
 
-                // Preset Pills
+                // Near-Field ASMR & Spatial Preset Pills
                 HStack(spacing: 4) {
-                    presetButton("Orbit", script: "orbit radius=2.5 speed=0.4 height=0.0")
-                    presetButton("Lissajous", script: "lissajous xR=2.2 yR=0.7 zR=1.8 xF=0.4 yF=0.7 zF=0.3")
-                    presetButton("Spiral", script: "spiral min=0.5 max=3.5 speed=0.3 vSpeed=0.15 vAmp=0.8")
-                    presetButton("Pendulum", script: "pendulum length=2.0 angle=45 freq=0.8 axis=x")
-                    presetButton("Wander", script: "wander radius=3.0 speed=0.4 jitter=0.2")
-                    presetButton("Math Expr", script: "expr x=2.5*cos(0.6*t); y=0.4*sin(1.2*t); z=2.0*sin(0.6*t)")
+                    presetButton("Ear-to-Ear", script: "expr x=0.24*sin(0.28*t); y=0.0; z=0.14*cos(0.56*t)")
+                    presetButton("Close Orbit", script: "orbit radius=0.25 speed=0.14 height=0.04")
+                    presetButton("Nape Sweep", script: "expr x=0.22*sin(0.35*t); y=-0.06; z=0.22")
+                    presetButton("Lissajous", script: "lissajous xR=0.26 yR=0.09 zR=0.24 xF=0.18 yF=0.29 zF=0.14")
+                    presetButton("Spiral", script: "spiral min=0.18 max=0.65 speed=0.14 vSpeed=0.10 vAmp=0.15")
+                    presetButton("Wander", script: "wander radius=0.32 speed=0.22 jitter=0.15")
                 }
             } else {
-                Text("Select an audio layer on the radar or list to live-script its 3D motion.")
+                Text("Select an audio layer on the radar or list to inspect its 5-stage DSP filter chain and 3D trajectory.")
                     .font(.system(size: 10, weight: .regular))
                     .foregroundColor(AudioToyStyle.textMuted)
                     .padding(.vertical, 4)

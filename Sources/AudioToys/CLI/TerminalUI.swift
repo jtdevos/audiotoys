@@ -84,9 +84,9 @@ public final class TerminalUI: @unchecked Sendable {
 
         // Draw active layer markers
         for (idx, layer) in engine.activeLayers.enumerated() {
-            // Map meters (-3m to +3m) to grid
-            let gx = Int(round(Float(center) + (layer.currentPosition.x / 3.0) * Float(center - 1)))
-            let gz = Int(round(Float(center) + (layer.currentPosition.z / 3.0) * Float(center - 1)))
+            // Map near-field meters (-0.85m to +0.85m) to grid
+            let gx = Int(round(Float(center) + (layer.currentPosition.x / 0.85) * Float(center - 1)))
+            let gz = Int(round(Float(center) + (layer.currentPosition.z / 0.85) * Float(center - 1)))
 
             if gx >= 0 && gx < size && gz >= 0 && gz < size {
                 grid[gz][gx] = "\u{001B}[1;33m\(idx + 1)\u{001B}[0m"
@@ -95,18 +95,18 @@ public final class TerminalUI: @unchecked Sendable {
 
         // Print header & grid in-place
         var output = "\u{001B}[7;1H" // Move cursor to line 7
-        output += "         ▲ FRONT (Nose)        Time: \(String(format: "%.1fs", elapsed))\n"
+        output += "         ▲ FRONT (Face)        Time: \(String(format: "%.1fs", elapsed))\n"
         for row in grid {
             output += "    " + row.joined() + "\n"
         }
-        output += "         ▼ BEHIND\n\n"
+        output += "         ▼ NAPE / BEHIND\n\n"
 
-        output += "\u{001B}[1mActive Layers:\u{001B}[0m\n"
+        output += "\u{001B}[1mActive Layers & 5-Stage Acoustic DSP Chains:\u{001B}[0m\n"
         for (idx, layer) in engine.activeLayers.enumerated() {
             let pos = layer.currentPosition
-            let paddedName = layer.name.padding(toLength: 22, withPad: " ", startingAt: 0)
-            output += String(format: " [\(idx + 1)] \u{001B}[1;36m%@\u{001B}[0m x:%+.1fm y:%+.1fm z:%+.1fm  [\(layer.motionScript.type.rawValue)]\n",
-                             paddedName, pos.x, pos.y, pos.z)
+            let paddedName = layer.name.padding(toLength: 24, withPad: " ", startingAt: 0)
+            output += String(format: " [\(idx + 1)] \u{001B}[1;36m%@\u{001B}[0m d:%3.0fcm (prox %3d%%) x:%+.2fm y:%+.2fm z:%+.2fm  [\(layer.filterChain.profile.rawValue)]\n",
+                             paddedName, pos.magnitude * 100.0, layer.proximityPercent, pos.x, pos.y, pos.z)
         }
 
         print(output)

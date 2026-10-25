@@ -2,11 +2,11 @@ import Foundation
 import AVFoundation
 
 public enum ReverbEnvironmentPreset: String, CaseIterable, Identifiable {
-    case cathedral = "Cathedral"
-    case largeChamber = "Large Chamber"
-    case mediumRoom = "Medium Room"
-    case plate = "Plate Reverb"
     case smallRoom = "Small Room"
+    case mediumRoom = "Medium Room"
+    case largeChamber = "Large Chamber"
+    case cathedral = "Cathedral"
+    case plate = "Plate Reverb"
     case off = "Direct (No Reverb)"
 
     public var id: String { rawValue }
@@ -24,20 +24,28 @@ public enum ReverbEnvironmentPreset: String, CaseIterable, Identifiable {
 }
 
 /// The spatial audio engine managing AVAudioEngine, AVAudioEnvironmentNode,
-/// real-time HRTF 3D spatialization, and active audio layers.
+/// real-time HRTF 3D spatialization, 5-stage per-layer acoustic filter chains,
+/// and organic sample/procedural rendering.
 public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
     public let engine = AVAudioEngine()
     public let environmentNode = AVAudioEnvironmentNode()
 
     @Published public private(set) var isRunning: Bool = false
-    @Published public var masterVolume: Float = 0.85 {
+    @Published public var masterVolume: Float = 0.88 {
         didSet {
             engine.mainMixerNode.outputVolume = masterVolume
         }
     }
-    @Published public var currentReverb: ReverbEnvironmentPreset = .largeChamber {
+    @Published public var currentReverb: ReverbEnvironmentPreset = .smallRoom {
         didSet {
             applyReverb(currentReverb)
+        }
+    }
+    @Published public var asmrProximityBoost: Float = 1.0 {
+        didSet {
+            for layer in activeLayers {
+                layer.filterChain.proximityIntensity = asmrProximityBoost
+            }
         }
     }
 
@@ -54,10 +62,12 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
 
     private func setupEngine() {
         engine.attach(environmentNode)
-        
+
         let outputFormat = engine.mainMixerNode.outputFormat(forBus: 0)
-        let envFormat = AVAudioFormat(standardFormatWithSampleRate: outputFormat.sampleRate > 0 ? outputFormat.sampleRate : 44100.0,
-                                      channels: 2)!
+        let envFormat = AVAudioFormat(
+            standardFormatWithSampleRate: outputFormat.sampleRate > 0 ? outputFormat.sampleRate : 44100.0,
+            channels: 2
+        )!
 
         engine.connect(environmentNode, to: engine.mainMixerNode, format: envFormat)
 
@@ -66,11 +76,11 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
         environmentNode.listenerPosition = AVAudio3DPoint(x: 0, y: 0, z: 0)
         environmentNode.listenerAngularOrientation = AVAudio3DAngularOrientation(yaw: 0, pitch: 0, roll: 0)
 
-        // Distance attenuation
-        environmentNode.distanceAttenuationParameters.distanceAttenuationModel = .exponential
-        environmentNode.distanceAttenuationParameters.referenceDistance = 1.0
+        // Calibrated for both near-field ASMR (0.15m - 0.8m) and room-scale (1.0m - 6.0m)
+        environmentNode.distanceAttenuationParameters.distanceAttenuationModel = .inverse
+        environmentNode.distanceAttenuationParameters.referenceDistance = 0.32
         environmentNode.distanceAttenuationParameters.maximumDistance = 25.0
-        environmentNode.distanceAttenuationParameters.rolloffFactor = 1.0
+        environmentNode.distanceAttenuationParameters.rolloffFactor = 0.78
 
         applyReverb(currentReverb)
         engine.mainMixerNode.outputVolume = masterVolume
@@ -80,7 +90,21 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
         if let avPre = preset.avPreset {
             environmentNode.reverbParameters.enable = true
             environmentNode.reverbParameters.loadFactoryReverbPreset(avPre)
-            environmentNode.reverbParameters.level = -14.0
+            // Subtle, natural acoustic room reflection level (avoids metallic ringing)
+            switch preset {
+            case .smallRoom:
+                environmentNode.reverbParameters.level = -24.0
+            case .mediumRoom:
+                environmentNode.reverbParameters.level = -21.0
+            case .largeChamber:
+                environmentNode.reverbParameters.level = -18.0
+            case .cathedral:
+                environmentNode.reverbParameters.level = -15.0
+            case .plate:
+                environmentNode.reverbParameters.level = -19.0
+            case .off:
+                environmentNode.reverbParameters.enable = false
+            }
         } else {
             environmentNode.reverbParameters.enable = false
         }
@@ -92,7 +116,7 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
             try engine.start()
             isRunning = true
             startUpdateTimer()
-            print("🔊 SpatialAudioEngine started with HRTFHQ 3D audio rendering.")
+            print("🔊 SpatialAudioEngine started (HRTFHQ Binaural + 5-Stage Acoustic Filter Chain).")
         } catch {
             print("❌ Failed to start AVAudioEngine: \(error)")
         }
@@ -124,80 +148,66 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
 
     public func addLayer(_ layer: AudioLayer) {
         let isEngineRunning = engine.isRunning
+        layer.filterChain.proximityIntensity = asmrProximityBoost
 
+        let resolvedVoice: DSPVoice?
         switch layer.source {
         case .procedural(let config):
-            let voice = createDSPVoice(for: config)
-            layer.dspVoice = voice
-            let sampleRate = standardFormat.sampleRate
+            resolvedVoice = createDSPVoice(for: config)
 
-            let sourceNode = AVAudioSourceNode(format: standardFormat) { [weak layer] _, _, frameCount, audioBufferList -> OSStatus in
-                let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
-                guard let buffer = abl[0].mData?.assumingMemoryBound(to: Float.self) else {
-                    return noErr
-                }
-                memset(buffer, 0, Int(frameCount) * MemoryLayout<Float>.size)
-                guard let l = layer, !l.isMuted, l.volume > 0.0001 else { return noErr }
-                voice.render(buffer: buffer, frameCount: Int(frameCount), sampleRate: sampleRate)
-                let vol = l.volume
-                if vol < 0.999 {
-                    for i in 0..<Int(frameCount) {
-                        buffer[i] *= vol
-                    }
-                }
+        case .audioFile(let path, let isLooping, let interval):
+            let fileURL = resolveResourceURL(path: path)
+            if let streamer = OrganicSampleStreamer(fileURL: fileURL, isLooping: isLooping, interval: interval) {
+                resolvedVoice = streamer
+            } else {
+                print("⚠️ Could not load audio file at: \(fileURL.path)")
+                resolvedVoice = nil
+            }
+        }
+
+        guard let voice = resolvedVoice else { return }
+        layer.dspVoice = voice
+        let sampleRate = standardFormat.sampleRate
+        let filterChain = layer.filterChain
+
+        let sourceNode = AVAudioSourceNode(format: standardFormat) { [weak layer] _, _, frameCount, audioBufferList -> OSStatus in
+            let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
+            guard let buffer = abl[0].mData?.assumingMemoryBound(to: Float.self) else {
+                return noErr
+            }
+            let frames = Int(frameCount)
+            memset(buffer, 0, frames * MemoryLayout<Float>.size)
+
+            guard let l = layer, !l.isMuted, l.volume > 0.0001 else {
                 return noErr
             }
 
-            engine.attach(sourceNode)
-            engine.connect(sourceNode, to: environmentNode, format: standardFormat)
-            layer.audioNode = sourceNode
+            // 1. Render raw organic sample or physical/modal voice
+            voice.render(buffer: buffer, frameCount: frames, sampleRate: sampleRate)
 
-            // Configure 3D mixing
-            sourceNode.renderingAlgorithm = .HRTFHQ
-            sourceNode.reverbBlend = 0.28
-            let initialPos = layer.currentPosition
-            sourceNode.position = AVAudio3DPoint(x: initialPos.x, y: initialPos.y, z: initialPos.z)
+            // 2. Process through 5-stage acoustic filter chain (HPF -> Proximity Shelf -> Body EQ -> Air Exciter/LPF -> Transient/SoftClip)
+            filterChain.process(buffer: buffer, frameCount: frames, sampleRate: sampleRate)
 
-        case .audioFile(let path, let isLooping, _):
-            let fileURL: URL
-            if path.starts(with: "/") {
-                fileURL = URL(fileURLWithPath: path)
-            } else {
-                fileURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-                    .appendingPathComponent(path)
-            }
-
-            guard let audioFile = try? AVAudioFile(forReading: fileURL) else {
-                print("⚠️ Could not load audio file at: \(fileURL.path)")
-                return
-            }
-            layer.audioFile = audioFile
-
-            let playerNode = AVAudioPlayerNode()
-            engine.attach(playerNode)
-            engine.connect(playerNode, to: environmentNode, format: audioFile.processingFormat)
-            layer.playerNode = playerNode
-            layer.audioNode = playerNode
-
-            playerNode.renderingAlgorithm = .HRTFHQ
-            playerNode.reverbBlend = 0.22
-            let initialPos = layer.currentPosition
-            playerNode.position = AVAudio3DPoint(x: initialPos.x, y: initialPos.y, z: initialPos.z)
-            playerNode.volume = layer.volume
-
-            if isLooping {
-                playerNode.scheduleFile(audioFile, at: nil) { [weak playerNode, weak audioFile] in
-                    // Reschedule loop on completion
-                    guard let p = playerNode, let f = audioFile else { return }
-                    p.scheduleFile(f, at: nil)
+            // 3. Apply layer volume
+            let vol = l.volume
+            if abs(vol - 1.0) > 0.001 {
+                for i in 0..<frames {
+                    buffer[i] *= vol
                 }
-                if isEngineRunning {
-                    playerNode.play()
-                }
-            } else {
-                layer.triggerAudioFile()
             }
+            return noErr
         }
+
+        engine.attach(sourceNode)
+        engine.connect(sourceNode, to: environmentNode, format: standardFormat)
+        layer.audioNode = sourceNode
+
+        // Configure 3D HRTF mixing
+        sourceNode.renderingAlgorithm = .HRTFHQ
+        let initialPos = layer.currentPosition
+        let dist = initialPos.magnitude
+        sourceNode.reverbBlend = max(0.02, min(0.35, (dist - 0.18) * 0.14))
+        sourceNode.position = AVAudio3DPoint(x: initialPos.x, y: initialPos.y, z: initialPos.z)
 
         layer.environmentNode = environmentNode
         activeLayers.append(layer)
@@ -205,6 +215,30 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
         if isEngineRunning && !engine.isRunning {
             try? engine.start()
         }
+    }
+
+    private func resolveResourceURL(path: String) -> URL {
+        if path.starts(with: "/") {
+            return URL(fileURLWithPath: path)
+        }
+        let cwdURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent(path)
+        if FileManager.default.fileExists(atPath: cwdURL.path) {
+            return cwdURL
+        }
+        if let bundleResURL = Bundle.main.resourceURL {
+            let candidate1 = bundleResURL.appendingPathComponent(path)
+            if FileManager.default.fileExists(atPath: candidate1.path) {
+                return candidate1
+            }
+            let candidate2 = bundleResURL.appendingPathComponent("Resources").appendingPathComponent(
+                path.replacingOccurrences(of: "Resources/", with: "")
+            )
+            if FileManager.default.fileExists(atPath: candidate2.path) {
+                return candidate2
+            }
+        }
+        return cwdURL
     }
 
     private func createDSPVoice(for config: ProceduralVoiceConfig) -> DSPVoice {
@@ -234,6 +268,8 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
             switch typeStr.lowercased() {
             case "campfire": iType = .campfire
             case "clocktick": iType = .clockTick
+            case "scissors", "barberscissors": iType = .barberScissors
+            case "comb", "barbercomb": iType = .barberComb
             default: iType = .raindrop
             }
             return GranularImpulseVoice(type: iType, density: density)
@@ -251,7 +287,6 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
 
     private func startUpdateTimer() {
         displayTimer?.invalidate()
-        // 60 fps motion updates
         displayTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             let t = Float(Date().timeIntervalSince(self.startTime))

@@ -6,9 +6,10 @@ public final class AppState: ObservableObject, @unchecked Sendable {
     public let engine = SpatialAudioEngine()
 
     @Published public var themes: [Theme] = ThemeLibrary.defaultThemes
-    @Published public var selectedThemeId: String = "nostromo"
+    @Published public var selectedThemeId: String = "barber-shop"
     @Published public var selectedLayerId: String? = nil
 
+    @Published public var isNearFieldRadar: Bool = true
     @Published public var scriptEditorText: String = ""
     @Published public var scriptStatus: String = "Ready"
     @Published public var isScriptError: Bool = false
@@ -23,7 +24,7 @@ public final class AppState: ObservableObject, @unchecked Sendable {
             .appendingPathComponent("Resources/Samples")
         SampleGenerator.generateDefaultSamples(inDirectory: samplesDir)
 
-        // Ensure default themes exist
+        // Sync and load themes
         let themesDir = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
             .appendingPathComponent("Resources/Themes")
         ThemeLoader.syncDefaultThemesToDisk(directory: themesDir)

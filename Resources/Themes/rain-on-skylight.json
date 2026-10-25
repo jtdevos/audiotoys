@@ -3,55 +3,66 @@
   "layers" : [
     {
       "colorHex" : "#4FACFE",
-      "id" : "E8397B66-939D-46A6-9DAC-7050C9229AB6",
-      "motionScript" : "expr x=1.2*sin(t*0.5); y=1.8+0.2*sin(t*1.2); z=1.2*cos(t*0.5)",
-      "name" : "Skylight Raindrops",
+      "id" : "B4780612-2F22-471A-87A8-B2B6152D2F6E",
+      "motionScript" : "expr x=0.55*sin(t*0.22); y=0.65+0.10*sin(t*0.5); z=-0.45*cos(t*0.22)",
+      "name" : "Windowpane Rain Shower",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/rain_window.wav"
+        }
+      },
+      "volume" : 0.85
+    },
+    {
+      "colorHex" : "#FF5E3A",
+      "id" : "90CE0EB9-0F7A-46C9-9732-BE1B67FF2BE5",
+      "motionScript" : "static x=0.52 y=-0.18 z=-0.32",
+      "name" : "Crackling Hearth Fire",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/hearth_fire_crackle.wav"
+        }
+      },
+      "volume" : 0.82
+    },
+    {
+      "colorHex" : "#00F2FE",
+      "id" : "4C6D35DC-425E-4E53-87B2-9BFAA51F48DA",
+      "motionScript" : "wander radius=0.48 speed=0.22 jitter=0.15",
+      "name" : "Close Glass Droplets",
       "source" : {
         "procedural" : {
           "_0" : {
             "granularImpulse" : {
-              "density" : 24,
+              "density" : 18,
               "type" : "raindrop"
             }
           }
         }
       },
-      "volume" : 0.75
+      "volume" : 0.62
     },
     {
-      "colorHex" : "#FF416C",
-      "id" : "AC15BB30-1AB7-42A0-8ACA-026CABC03E48",
-      "motionScript" : "static x=1.6 y=-0.4 z=0.9",
-      "name" : "Hearthside Embers",
-      "source" : {
-        "procedural" : {
-          "_0" : {
-            "granularImpulse" : {
-              "density" : 16,
-              "type" : "campfire"
-            }
-          }
-        }
-      },
-      "volume" : 0.7
-    },
-    {
-      "colorHex" : "#434343",
-      "id" : "3F2EF819-612B-43F3-B12A-089C50FFF168",
-      "motionScript" : "flyby start=[-10, 2, 8] end=[10, 1, 8] duration=5.0 pause=3.0",
-      "name" : "Rolling Thunder",
+      "colorHex" : "#A18CD1",
+      "id" : "F5ADA78E-0388-4B9E-BBF7-AE1C42F33C41",
+      "motionScript" : "flyby start=[-3.2, 0.8, -2.5] end=[3.2, 0.6, -2.5] duration=7.0 pause=3.5",
+      "name" : "Distant Horizon Thunder",
       "source" : {
         "audioFile" : {
-          "interval" : 8,
+          "interval" : 10.5,
           "isLooping" : false,
           "path" : "Resources\/Samples\/distant_thunder.wav"
         }
       },
-      "volume" : 0.65
+      "volume" : 0.75
     }
   ],
-  "moodDescription" : "Curled up under a glass skylight hearing raindrops tap above your head, an ember-crackling fire by your side, and rolling thunder sweeping the horizon.",
+  "moodDescription" : "Curled up beneath a glass skylight as real raindrops patter and streak across the pane overhead, resinous logs crackle and pop in the hearth beside you, and deep thunder rolls across the distant horizon.",
   "reverbPreset" : "Medium Room",
-  "subtitle" : "Cozy fireside sanctuary & rolling thunder",
-  "title" : "Rain on the Skylight"
+  "subtitle" : "Real Window Rain, Crackling Hearth Wood & Rolling Thunder",
+  "title" : "Rain on Skylight"
 }

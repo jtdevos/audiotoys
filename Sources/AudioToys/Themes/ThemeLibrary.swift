@@ -3,218 +3,310 @@ import Foundation
 public struct ThemeLibrary {
     public static var defaultThemes: [Theme] {
         return [
+            // 1. STRETCH GOAL & FLAGSHIP: Binaural Barber Shop ASMR
             Theme(
-                id: "nostromo",
-                title: "Nostromo",
-                subtitle: "USCSS Commercial Freighter 180286 • MU-TH-UR 6000",
-                moodDescription: "Echoing industrial corridors of the Nostromo: chunky Winchester drive head seeks, MU-TH-UR 6000 data chirps, tape spindles spinning up, and the deep subterranean vibration of the fusion engines through the metal deck plates.",
-                reverbPreset: "Large Chamber",
-                layers: [
-                    LayerDefinition(
-                        name: "MU-TH-UR Terminal",
-                        colorHex: "#FFE600",
-                        volume: 0.85,
-                        source: .audioFile(path: "Resources/Samples/nostromo_drive_seek.wav", isLooping: true, interval: 0),
-                        motionScript: "static x=0.0 y=0.15 z=-1.2"
-                    ),
-                    LayerDefinition(
-                        name: "Drive Rack Spindles",
-                        colorHex: "#00F0FF",
-                        volume: 0.75,
-                        source: .audioFile(path: "Resources/Samples/nostromo_drive_spinup.wav", isLooping: true, interval: 0),
-                        motionScript: "expr x=1.8+0.06*sin(0.4*t); y=-0.1; z=-1.4+0.06*cos(0.5*t)"
-                    ),
-                    LayerDefinition(
-                        name: "MU-TH-UR Query Beeps",
-                        colorHex: "#FF9900",
-                        volume: 0.70,
-                        source: .audioFile(path: "Resources/Samples/nostromo_muthur_beeps.wav", isLooping: false, interval: 5.5),
-                        motionScript: "static x=-0.8 y=0.35 z=-1.3"
-                    ),
-                    LayerDefinition(
-                        name: "Reactor Floor Rumble",
-                        colorHex: "#FF3B30",
-                        volume: 0.80,
-                        source: .audioFile(path: "Resources/Samples/nostromo_hull_rumble.wav", isLooping: true, interval: 0),
-                        motionScript: "static x=0.0 y=-1.8 z=0.0"
-                    ),
-                    LayerDefinition(
-                        name: "Overhead Coolant Duct",
-                        colorHex: "#34C759",
-                        volume: 0.65,
-                        source: .audioFile(path: "Resources/Samples/nostromo_coolant_vent.wav", isLooping: false, interval: 7.5),
-                        motionScript: "static x=0.0 y=2.2 z=-0.4"
-                    ),
-                    LayerDefinition(
-                        name: "Avionics Scanner Sweep",
-                        colorHex: "#5AC8FA",
-                        volume: 0.50,
-                        source: .procedural(.fmBell(baseFreq: 940.0, modRatio: 1.0, interval: 4.0)),
-                        motionScript: "flyby start=[-2.2, 0.3, -1.1] end=[2.2, 0.3, -1.1] duration=8.0 pause=4.0"
-                    )
-                ]
-            ),
-            Theme(
-                id: "midnight-meadow",
-                title: "Midnight Meadow",
-                subtitle: "Bioluminescent crickets & wandering fireflies",
-                moodDescription: "A serene nocturnal meadow where soft breezes drift past your ears, crickets rustle in the grass, and a glowing musical firefly orbits overhead.",
-                reverbPreset: "Large Chamber",
-                layers: [
-                    LayerDefinition(
-                        name: "Midnight Breeze",
-                        colorHex: "#38EF7D",
-                        volume: 0.45,
-                        source: .procedural(.filteredNoise(type: "pink", cutoff: 650.0, resonance: 2.2)),
-                        motionScript: "wander radius=2.5 speed=0.35 jitter=0.2"
-                    ),
-                    LayerDefinition(
-                        name: "Wandering Firefly",
-                        colorHex: "#FFD200",
-                        volume: 0.75,
-                        source: .procedural(.fmBell(baseFreq: 440.0, modRatio: 2.756, interval: 3.2)),
-                        motionScript: "lissajous xR=2.2 yR=0.7 zR=1.8 xF=0.4 yF=0.7 zF=0.3"
-                    ),
-                    LayerDefinition(
-                        name: "Meadow Harp",
-                        colorHex: "#00E5FF",
-                        volume: 0.65,
-                        source: .procedural(.pluckedString(baseFreq: 220.0, interval: 2.8)),
-                        motionScript: "orbit radius=2.8 speed=0.18 height=0.3 phase=1.5"
-                    ),
-                    LayerDefinition(
-                        name: "Field Crickets",
-                        colorHex: "#8AE234",
-                        volume: 0.55,
-                        source: .audioFile(path: "Resources/Samples/cricket_chirp.wav", isLooping: true, interval: 0),
-                        motionScript: "static x=-2.2 y=-0.6 z=1.2"
-                    )
-                ]
-            ),
-            Theme(
-                id: "celestial-orbits",
-                title: "Celestial Orbits",
-                subtitle: "Harmonic planetary spheres & stardust harp",
-                moodDescription: "Float in deep space encircled by singing bowls, crystalline harmonic rings, and deep sub-space vibrations.",
-                reverbPreset: "Cathedral",
-                layers: [
-                    LayerDefinition(
-                        name: "Deep Cosmic Drone",
-                        colorHex: "#6A11CB",
-                        volume: 0.55,
-                        source: .procedural(.subtractiveDrone(fundamental: 65.4, detune: 7.0)),
-                        motionScript: "static x=0.0 y=-0.5 z=0.0"
-                    ),
-                    LayerDefinition(
-                        name: "Tibetan Singing Bowl",
-                        colorHex: "#F7971E",
-                        volume: 0.8,
-                        source: .procedural(.fmBell(baseFreq: 261.6, modRatio: 1.414, interval: 4.5)),
-                        motionScript: "orbit radius=1.6 speed=0.3 height=0.0 phase=0.0"
-                    ),
-                    LayerDefinition(
-                        name: "Crystalline Chimes",
-                        colorHex: "#00F2FE",
-                        volume: 0.7,
-                        source: .procedural(.fmBell(baseFreq: 587.3, modRatio: 3.1415, interval: 2.6)),
-                        motionScript: "orbit radius=2.7 speed=-0.22 height=0.8 phase=3.14"
-                    ),
-                    LayerDefinition(
-                        name: "Stardust Harp",
-                        colorHex: "#FA709A",
-                        volume: 0.65,
-                        source: .procedural(.pluckedString(baseFreq: 330.0, interval: 2.2)),
-                        motionScript: "spiral min=0.8 max=3.2 speed=0.25 vSpeed=0.15 vAmp=0.6"
-                    )
-                ]
-            ),
-            Theme(
-                id: "rain-on-skylight",
-                title: "Rain on the Skylight",
-                subtitle: "Cozy fireside sanctuary & rolling thunder",
-                moodDescription: "Curled up under a glass skylight hearing raindrops tap above your head, an ember-crackling fire by your side, and rolling thunder sweeping the horizon.",
-                reverbPreset: "Medium Room",
-                layers: [
-                    LayerDefinition(
-                        name: "Skylight Raindrops",
-                        colorHex: "#4FACFE",
-                        volume: 0.75,
-                        source: .procedural(.granularImpulse(type: "raindrop", density: 24.0)),
-                        motionScript: "expr x=1.2*sin(t*0.5); y=1.8+0.2*sin(t*1.2); z=1.2*cos(t*0.5)"
-                    ),
-                    LayerDefinition(
-                        name: "Hearthside Embers",
-                        colorHex: "#FF416C",
-                        volume: 0.7,
-                        source: .procedural(.granularImpulse(type: "campfire", density: 16.0)),
-                        motionScript: "static x=1.6 y=-0.4 z=0.9"
-                    ),
-                    LayerDefinition(
-                        name: "Rolling Thunder",
-                        colorHex: "#434343",
-                        volume: 0.65,
-                        source: .audioFile(path: "Resources/Samples/distant_thunder.wav", isLooping: false, interval: 8.0),
-                        motionScript: "flyby start=[-10, 2, 8] end=[10, 1, 8] duration=5.0 pause=3.0"
-                    )
-                ]
-            ),
-            Theme(
-                id: "clockwork-attic",
-                title: "Clockwork Attic",
-                subtitle: "Antique escapements & swinging pendulum",
-                moodDescription: "Step into an eccentric horologist’s attic where pocket watches swing past your face, grandfather clocks chime in corners, and musical automatons circle.",
+                id: "barber-shop",
+                title: "Barber Shop",
+                subtitle: "Binaural Haircut ASMR • Japanese Shears, Clippers, Mist & Brush",
+                moodDescription: "Sink into a vintage leather barber chair. Crisp Japanese steel shears snip inches from your ears, cordless rotary clippers hum warmly around your nape with near-field proximity bass, a fine-tooth comb glides across your crown, cool water mist spritzes overhead, and a soft badger-hair brush dusts your collar.",
                 reverbPreset: "Small Room",
                 layers: [
                     LayerDefinition(
-                        name: "Grandfather Clock",
-                        colorHex: "#B78628",
-                        volume: 0.6,
-                        source: .audioFile(path: "Resources/Samples/clock_tick.wav", isLooping: true, interval: 0),
-                        motionScript: "static x=-2.0 y=0.0 z=0.6"
+                        name: "Japanese Steel Shears",
+                        colorHex: "#00F5D4",
+                        volume: 0.88,
+                        source: .audioFile(path: "Resources/Samples/barber_scissors.wav", isLooping: true, interval: 0),
+                        motionScript: "orbit radius=0.26 speed=0.11 height=0.05 phase=0.0"
                     ),
                     LayerDefinition(
-                        name: "Swinging Pocket Watch",
-                        colorHex: "#FCCF31",
-                        volume: 0.75,
-                        source: .procedural(.granularImpulse(type: "clocktick", density: 2.0)),
-                        motionScript: "pendulum length=1.8 angle=42 freq=0.9 axis=x"
+                        name: "Detail Layering Snips",
+                        colorHex: "#5AC8FA",
+                        volume: 0.68,
+                        source: .procedural(.granularImpulse(type: "scissors", density: 3.5)),
+                        motionScript: "lissajous xR=0.24 yR=0.08 zR=0.22 xF=0.16 yF=0.27 zF=0.13"
                     ),
                     LayerDefinition(
-                        name: "Automaton Music Box",
-                        colorHex: "#F5576C",
-                        volume: 0.7,
-                        source: .procedural(.pluckedString(baseFreq: 523.25, interval: 1.6)),
-                        motionScript: "orbit radius=1.9 speed=0.45 height=0.1 phase=0.8"
+                        name: "Cordless Rotary Clippers",
+                        colorHex: "#FF9F1C",
+                        volume: 0.72,
+                        source: .audioFile(path: "Resources/Samples/barber_clippers.wav", isLooping: true, interval: 0),
+                        motionScript: "expr x=0.24*sin(0.19*t); y=-0.06+0.04*cos(0.31*t); z=0.18+0.12*cos(0.19*t)"
+                    ),
+                    LayerDefinition(
+                        name: "Fine-Tooth Barber Comb",
+                        colorHex: "#FFD166",
+                        volume: 0.78,
+                        source: .audioFile(path: "Resources/Samples/barber_comb_bristles.wav", isLooping: false, interval: 2.8),
+                        motionScript: "wander radius=0.25 speed=0.24 jitter=0.15"
+                    ),
+                    LayerDefinition(
+                        name: "Atomizer Water Mist",
+                        colorHex: "#38EF7D",
+                        volume: 0.76,
+                        source: .audioFile(path: "Resources/Samples/barber_spray.wav", isLooping: false, interval: 6.5),
+                        motionScript: "expr x=0.18*sin(0.15*t); y=0.20; z=-0.18+0.10*cos(0.15*t)"
+                    ),
+                    LayerDefinition(
+                        name: "Badger-Hair Neck Duster",
+                        colorHex: "#F72585",
+                        volume: 0.74,
+                        source: .audioFile(path: "Resources/Samples/barber_brush.wav", isLooping: false, interval: 5.2),
+                        motionScript: "expr x=0.22*sin(0.45*t); y=-0.12; z=0.20"
+                    ),
+                    LayerDefinition(
+                        name: "Scalp Fingertip Massage",
+                        colorHex: "#B5179E",
+                        volume: 0.58,
+                        source: .audioFile(path: "Resources/Samples/barber_scalp_massage.wav", isLooping: false, interval: 6.0),
+                        motionScript: "orbit radius=0.19 speed=-0.15 height=0.12 phase=1.57"
                     )
                 ]
             ),
+
+            // 2. Tactile ASMR Study (Close-Mic Foley Triggers)
             Theme(
-                id: "quantum-voyage",
-                title: "Quantum Voyage",
-                subtitle: "Sci-fi tachyon sweeps & orbital probes",
-                moodDescription: "An exhilarating sonic journey through an exotic energy field with warp drones, ion probes darting by, and spiraling tachyon signals.",
-                reverbPreset: "Plate Reverb",
+                id: "tactile-study",
+                title: "Tactile Study",
+                subtitle: "Close-Mic ASMR • Graphite Sketching, Page Turns, Wood Taps & Purr",
+                moodDescription: "An intimate candlelit study designed for deep sensory tingles: a graphite pencil sketches on heavy cotton paper by your right ear, crisp book pages turn to your left, resonant hardwood blocks tap softly, a bamboo rainstick cascades, and a warm cat purrs on your shoulder.",
+                reverbPreset: "Small Room",
                 layers: [
                     LayerDefinition(
-                        name: "Warp Core",
-                        colorHex: "#7F00FF",
+                        name: "Graphite Pencil Sketching",
+                        colorHex: "#FFE66D",
+                        volume: 0.85,
+                        source: .audioFile(path: "Resources/Samples/pencil_sketching.wav", isLooping: true, interval: 0),
+                        motionScript: "expr x=0.26+0.05*sin(0.6*t); y=-0.05; z=-0.18+0.05*cos(0.5*t)"
+                    ),
+                    LayerDefinition(
+                        name: "Crisp Book Page Turns",
+                        colorHex: "#4ECDC4",
+                        volume: 0.82,
+                        source: .audioFile(path: "Resources/Samples/page_turning.wav", isLooping: false, interval: 4.4),
+                        motionScript: "expr x=-0.28+0.06*sin(0.3*t); y=-0.04; z=-0.20"
+                    ),
+                    LayerDefinition(
+                        name: "Hollow Hardwood Tapping",
+                        colorHex: "#FF6B6B",
+                        volume: 0.76,
+                        source: .audioFile(path: "Resources/Samples/wood_tapping.wav", isLooping: false, interval: 5.5),
+                        motionScript: "orbit radius=0.32 speed=0.14 height=-0.02 phase=2.1"
+                    ),
+                    LayerDefinition(
+                        name: "Bamboo Seed Rainstick",
+                        colorHex: "#00F5D4",
+                        volume: 0.68,
+                        source: .audioFile(path: "Resources/Samples/rainstick_seeds.wav", isLooping: true, interval: 0),
+                        motionScript: "spiral min=0.25 max=0.65 speed=0.12 vSpeed=0.10 vAmp=0.18"
+                    ),
+                    LayerDefinition(
+                        name: "Sleeping Cat Purr",
+                        colorHex: "#C77DFF",
+                        volume: 0.72,
+                        source: .audioFile(path: "Resources/Samples/cat_purr.wav", isLooping: true, interval: 0),
+                        motionScript: "static x=-0.22 y=-0.14 z=0.08"
+                    )
+                ]
+            ),
+
+            // 3. Rain on the Skylight (Grounded Field Recordings + Hearth Foley)
+            Theme(
+                id: "rain-on-skylight",
+                title: "Rain on Skylight",
+                subtitle: "Real Window Rain, Crackling Hearth Wood & Rolling Thunder",
+                moodDescription: "Curled up beneath a glass skylight as real raindrops patter and streak across the pane overhead, resinous logs crackle and pop in the hearth beside you, and deep thunder rolls across the distant horizon.",
+                reverbPreset: "Medium Room",
+                layers: [
+                    LayerDefinition(
+                        name: "Windowpane Rain Shower",
+                        colorHex: "#4FACFE",
+                        volume: 0.85,
+                        source: .audioFile(path: "Resources/Samples/rain_window.wav", isLooping: true, interval: 0),
+                        motionScript: "expr x=0.55*sin(t*0.22); y=0.65+0.10*sin(t*0.5); z=-0.45*cos(t*0.22)"
+                    ),
+                    LayerDefinition(
+                        name: "Crackling Hearth Fire",
+                        colorHex: "#FF5E3A",
+                        volume: 0.82,
+                        source: .audioFile(path: "Resources/Samples/hearth_fire_crackle.wav", isLooping: true, interval: 0),
+                        motionScript: "static x=0.52 y=-0.18 z=-0.32"
+                    ),
+                    LayerDefinition(
+                        name: "Close Glass Droplets",
+                        colorHex: "#00F2FE",
+                        volume: 0.62,
+                        source: .procedural(.granularImpulse(type: "raindrop", density: 18.0)),
+                        motionScript: "wander radius=0.48 speed=0.22 jitter=0.15"
+                    ),
+                    LayerDefinition(
+                        name: "Distant Horizon Thunder",
+                        colorHex: "#A18CD1",
+                        volume: 0.75,
+                        source: .audioFile(path: "Resources/Samples/distant_thunder.wav", isLooping: false, interval: 10.5),
+                        motionScript: "flyby start=[-3.2, 0.8, -2.5] end=[3.2, 0.6, -2.5] duration=7.0 pause=3.5"
+                    )
+                ]
+            ),
+
+            // 4. Midnight Meadow (Real Woodland Brook, Crickets Choir & Breeze)
+            Theme(
+                id: "midnight-meadow",
+                title: "Midnight Meadow",
+                subtitle: "Woodland Brook, Nocturnal Crickets & Cedar Harp",
+                moodDescription: "A tranquil moonlit clearing where a close-mic'd woodland brook trickles over mossy stones, a real choir of field crickets sings in the tall grass, gentle pine breezes drift past your ears, and a resonant cedar harp floats in the night air.",
+                reverbPreset: "Medium Room",
+                layers: [
+                    LayerDefinition(
+                        name: "Mossy Woodland Brook",
+                        colorHex: "#00E5FF",
+                        volume: 0.82,
+                        source: .audioFile(path: "Resources/Samples/woodland_brook.wav", isLooping: true, interval: 0),
+                        motionScript: "expr x=0.45+0.12*sin(0.25*t); y=-0.15; z=-0.38+0.10*cos(0.20*t)"
+                    ),
+                    LayerDefinition(
+                        name: "Nocturnal Cricket Choir",
+                        colorHex: "#8AE234",
+                        volume: 0.68,
+                        source: .audioFile(path: "Resources/Samples/cricket_chirp.wav", isLooping: true, interval: 0),
+                        motionScript: "static x=-0.65 y=-0.20 z=0.42"
+                    ),
+                    LayerDefinition(
+                        name: "Gentle Pine Breeze",
+                        colorHex: "#38EF7D",
+                        volume: 0.70,
+                        source: .audioFile(path: "Resources/Samples/forest_breeze.wav", isLooping: true, interval: 0),
+                        motionScript: "wander radius=0.60 speed=0.18 jitter=0.15"
+                    ),
+                    LayerDefinition(
+                        name: "Cedar Soundboard Harp",
+                        colorHex: "#FFD200",
+                        volume: 0.62,
+                        source: .procedural(.pluckedString(baseFreq: 220.0, interval: 3.0)),
+                        motionScript: "orbit radius=0.75 speed=0.14 height=0.15 phase=1.2"
+                    )
+                ]
+            ),
+
+            // 5. Tibetan Sanctuary (Real Tibetan Singing Bowl & Koshi Chimes)
+            Theme(
+                id: "celestial-orbits",
+                title: "Tibetan Sanctuary",
+                subtitle: "Hand-Hammered Singing Bowl, Koshi Chimes & Harmonium",
+                moodDescription: "Surrounded by authentic acoustic resonance: a real 4.5-inch hand-hammered Tibetan singing bowl and bamboo Koshi wind chimes orbit gently around your head over a warm acoustic harmonium drone.",
+                reverbPreset: "Large Chamber",
+                layers: [
+                    LayerDefinition(
+                        name: "Tibetan Singing Bowl (4.5\")",
+                        colorHex: "#F7971E",
+                        volume: 0.84,
+                        source: .audioFile(path: "Resources/Samples/singing_bowl.wav", isLooping: false, interval: 9.0),
+                        motionScript: "orbit radius=0.48 speed=0.14 height=0.05 phase=0.0"
+                    ),
+                    LayerDefinition(
+                        name: "Bamboo Koshi Wind Chimes",
+                        colorHex: "#00F2FE",
+                        volume: 0.80,
+                        source: .audioFile(path: "Resources/Samples/koshi_chimes.wav", isLooping: true, interval: 0),
+                        motionScript: "orbit radius=0.56 speed=-0.11 height=0.18 phase=3.14"
+                    ),
+                    LayerDefinition(
+                        name: "Modal Bronze Harmonics",
+                        colorHex: "#FA709A",
                         volume: 0.65,
-                        source: .procedural(.subtractiveDrone(fundamental: 58.0, detune: 12.0)),
-                        motionScript: "static x=0 y=-0.8 z=0"
+                        source: .procedural(.fmBell(baseFreq: 261.6, modRatio: 2.756, interval: 4.5)),
+                        motionScript: "spiral min=0.35 max=0.95 speed=0.15 vSpeed=0.12 vAmp=0.25"
                     ),
                     LayerDefinition(
-                        name: "Ion Probe Flyby",
-                        colorHex: "#00F260",
-                        volume: 0.8,
-                        source: .procedural(.filteredNoise(type: "white", cutoff: 1400.0, resonance: 4.5)),
-                        motionScript: "flyby start=[-7, 0.4, 1.6] end=[7, -0.4, 1.6] duration=3.5 pause=1.5"
+                        name: "Warm Harmonium Drone",
+                        colorHex: "#6A11CB",
+                        volume: 0.52,
+                        source: .procedural(.subtractiveDrone(fundamental: 65.4, detune: 5.5)),
+                        motionScript: "static x=0.0 y=-0.35 z=-0.40"
+                    )
+                ]
+            ),
+
+            // 6. Horologist's Workshop (Real Clocks, Watch Winding & Music Box)
+            Theme(
+                id: "clockwork-attic",
+                title: "Clockwork Attic",
+                subtitle: "Antique Escapements, Crown Winding & Mechanical Music Box",
+                moodDescription: "Step inside a quiet master horologist's bench: a close-up pocket watch ticks past your ears, a mechanical watch crown winds with crisp ratchet clicks, a grandfather clock resonates in the corner, and an antique wound-up music box plays.",
+                reverbPreset: "Small Room",
+                layers: [
+                    LayerDefinition(
+                        name: "Close Pocket Watch Tick",
+                        colorHex: "#FCCF31",
+                        volume: 0.84,
+                        source: .audioFile(path: "Resources/Samples/clock_tick.wav", isLooping: true, interval: 0),
+                        motionScript: "expr x=0.32*sin(0.35*t); y=-0.04; z=-0.26*cos(0.35*t)"
                     ),
                     LayerDefinition(
-                        name: "Tachyon Beacon",
-                        colorHex: "#0575E6",
-                        volume: 0.7,
-                        source: .procedural(.fmBell(baseFreq: 880.0, modRatio: 3.82, interval: 1.8)),
-                        motionScript: "spiral min=0.5 max=3.5 speed=0.45 vSpeed=0.25 vAmp=0.8"
+                        name: "Crown Ratchet Winding",
+                        colorHex: "#00F5D4",
+                        volume: 0.76,
+                        source: .audioFile(path: "Resources/Samples/watch_winding.wav", isLooping: false, interval: 6.5),
+                        motionScript: "static x=0.24 y=-0.08 z=-0.16"
+                    ),
+                    LayerDefinition(
+                        name: "Corner Grandfather Clock",
+                        colorHex: "#B78628",
+                        volume: 0.72,
+                        source: .audioFile(path: "Resources/Samples/grandfather_clock.wav", isLooping: true, interval: 0),
+                        motionScript: "static x=-0.85 y=0.05 z=-0.65"
+                    ),
+                    LayerDefinition(
+                        name: "Wound-Up Music Box",
+                        colorHex: "#F5576C",
+                        volume: 0.66,
+                        source: .audioFile(path: "Resources/Samples/music_box_lullaby.wav", isLooping: true, interval: 0),
+                        motionScript: "orbit radius=0.65 speed=0.16 height=0.08 phase=1.2"
+                    )
+                ]
+            ),
+
+            // 7. Nostromo (Real Hard Drive Seeks, Platter Spinup & Steam Venting)
+            Theme(
+                id: "nostromo",
+                title: "Nostromo",
+                subtitle: "USCSS Commercial Freighter 180286 • Real Drive Seeks & Steam",
+                moodDescription: "Inside the MU-TH-UR 6000 mainframe room: real mechanical hard disk head seek retries, heavy Toshiba disk platters spinning up, pressurized steam coolant vents overhead, and deep subterranean reactor rumble.",
+                reverbPreset: "Medium Room",
+                layers: [
+                    LayerDefinition(
+                        name: "Mechanical HDD Head Seeks",
+                        colorHex: "#FFE600",
+                        volume: 0.84,
+                        source: .audioFile(path: "Resources/Samples/nostromo_drive_seek.wav", isLooping: true, interval: 0),
+                        motionScript: "static x=-0.32 y=0.06 z=-0.42"
+                    ),
+                    LayerDefinition(
+                        name: "Platter Spindle Spin-Up",
+                        colorHex: "#00F0FF",
+                        volume: 0.78,
+                        source: .audioFile(path: "Resources/Samples/nostromo_drive_spinup.wav", isLooping: true, interval: 0),
+                        motionScript: "expr x=0.38+0.05*sin(0.4*t); y=-0.05; z=-0.45+0.05*cos(0.5*t)"
+                    ),
+                    LayerDefinition(
+                        name: "Pressurized Coolant Steam",
+                        colorHex: "#34C759",
+                        volume: 0.72,
+                        source: .audioFile(path: "Resources/Samples/nostromo_coolant_vent.wav", isLooping: false, interval: 7.0),
+                        motionScript: "static x=0.0 y=0.65 z=-0.25"
+                    ),
+                    LayerDefinition(
+                        name: "Reactor Deck Sub-Rumble",
+                        colorHex: "#FF3B30",
+                        volume: 0.75,
+                        source: .audioFile(path: "Resources/Samples/nostromo_hull_rumble.wav", isLooping: true, interval: 0),
+                        motionScript: "static x=0.0 y=-0.75 z=0.0"
+                    ),
+                    LayerDefinition(
+                        name: "MU-TH-UR Query Telemetry",
+                        colorHex: "#FF9900",
+                        volume: 0.58,
+                        source: .audioFile(path: "Resources/Samples/nostromo_muthur_beeps.wav", isLooping: false, interval: 6.5),
+                        motionScript: "static x=-0.28 y=0.14 z=-0.38"
                     )
                 ]
             )

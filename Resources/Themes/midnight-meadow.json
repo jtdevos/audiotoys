@@ -2,63 +2,24 @@
   "id" : "midnight-meadow",
   "layers" : [
     {
-      "colorHex" : "#38EF7D",
-      "id" : "4F42BBDB-6FFF-4E23-B642-18C8C8E2DFCA",
-      "motionScript" : "wander radius=2.5 speed=0.35 jitter=0.2",
-      "name" : "Midnight Breeze",
-      "source" : {
-        "procedural" : {
-          "_0" : {
-            "filteredNoise" : {
-              "cutoff" : 650,
-              "resonance" : 2.2,
-              "type" : "pink"
-            }
-          }
-        }
-      },
-      "volume" : 0.45
-    },
-    {
-      "colorHex" : "#FFD200",
-      "id" : "0F53FB3F-D878-4C4E-B62D-E6D11E11516C",
-      "motionScript" : "lissajous xR=2.2 yR=0.7 zR=1.8 xF=0.4 yF=0.7 zF=0.3",
-      "name" : "Wandering Firefly",
-      "source" : {
-        "procedural" : {
-          "_0" : {
-            "fmBell" : {
-              "baseFreq" : 440,
-              "interval" : 3.2,
-              "modRatio" : 2.756
-            }
-          }
-        }
-      },
-      "volume" : 0.75
-    },
-    {
       "colorHex" : "#00E5FF",
-      "id" : "251853D2-F946-41F9-B589-8D9CCEB3AA32",
-      "motionScript" : "orbit radius=2.8 speed=0.18 height=0.3 phase=1.5",
-      "name" : "Meadow Harp",
+      "id" : "05E21A72-B2EE-4348-B32F-AC537B3CD0A7",
+      "motionScript" : "expr x=0.45+0.12*sin(0.25*t); y=-0.15; z=-0.38+0.10*cos(0.20*t)",
+      "name" : "Mossy Woodland Brook",
       "source" : {
-        "procedural" : {
-          "_0" : {
-            "pluckedString" : {
-              "baseFreq" : 220,
-              "interval" : 2.8
-            }
-          }
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/woodland_brook.wav"
         }
       },
-      "volume" : 0.65
+      "volume" : 0.82
     },
     {
       "colorHex" : "#8AE234",
-      "id" : "E9E96ACD-3F2B-49A3-A969-8EC262858F40",
-      "motionScript" : "static x=-2.2 y=-0.6 z=1.2",
-      "name" : "Field Crickets",
+      "id" : "2DAAA748-3585-4DBD-82B9-00D232766722",
+      "motionScript" : "static x=-0.65 y=-0.20 z=0.42",
+      "name" : "Nocturnal Cricket Choir",
       "source" : {
         "audioFile" : {
           "interval" : 0,
@@ -66,11 +27,42 @@
           "path" : "Resources\/Samples\/cricket_chirp.wav"
         }
       },
-      "volume" : 0.55
+      "volume" : 0.68
+    },
+    {
+      "colorHex" : "#38EF7D",
+      "id" : "7D8B46ED-CEFA-401B-ACE0-828B8DE5E67D",
+      "motionScript" : "wander radius=0.60 speed=0.18 jitter=0.15",
+      "name" : "Gentle Pine Breeze",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/forest_breeze.wav"
+        }
+      },
+      "volume" : 0.7
+    },
+    {
+      "colorHex" : "#FFD200",
+      "id" : "0DFFC32D-134E-4625-BD3F-4435430FA9BD",
+      "motionScript" : "orbit radius=0.75 speed=0.14 height=0.15 phase=1.2",
+      "name" : "Cedar Soundboard Harp",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "pluckedString" : {
+              "baseFreq" : 220,
+              "interval" : 3
+            }
+          }
+        }
+      },
+      "volume" : 0.62
     }
   ],
-  "moodDescription" : "A serene nocturnal meadow where soft breezes drift past your ears, crickets rustle in the grass, and a glowing musical firefly orbits overhead.",
-  "reverbPreset" : "Large Chamber",
-  "subtitle" : "Bioluminescent crickets & wandering fireflies",
+  "moodDescription" : "A tranquil moonlit clearing where a close-mic'd woodland brook trickles over mossy stones, a real choir of field crickets sings in the tall grass, gentle pine breezes drift past your ears, and a resonant cedar harp floats in the night air.",
+  "reverbPreset" : "Medium Room",
+  "subtitle" : "Woodland Brook, Nocturnal Crickets & Cedar Harp",
   "title" : "Midnight Meadow"
 }

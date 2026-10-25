@@ -33,6 +33,10 @@ public struct Vector3: Codable, Equatable, Hashable {
         sqrt(x * x + y * y + z * z)
     }
 
+    public var magnitude: Float {
+        length
+    }
+
     public var horizontalDistance: Float {
         sqrt(x * x + z * z)
     }

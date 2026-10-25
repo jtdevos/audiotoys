@@ -10,7 +10,6 @@ public struct AudioToysMainView: View {
 
     public var body: some View {
         ZStack {
-            // Dark obsidian background
             AudioToyStyle.bgDark.edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 0) {
@@ -33,12 +32,12 @@ public struct AudioToysMainView: View {
                 HStack(spacing: 0) {
                     // 3D Spatial Radar
                     RadarView(appState: appState)
-                        .frame(minWidth: 440, minHeight: 440)
+                        .frame(minWidth: 460, minHeight: 460)
                         .background(Color.black.opacity(0.4))
 
                     Divider().background(AudioToyStyle.borderGlass)
 
-                    // Right Panel: Layer strip & Script editor
+                    // Right Panel: Layer strip & Script/Filter editor
                     VStack(spacing: 12) {
                         LayerListView(appState: appState)
                             .frame(maxHeight: .infinity)
@@ -47,7 +46,7 @@ public struct AudioToysMainView: View {
 
                         ScriptEditorView(appState: appState)
                     }
-                    .frame(width: 340)
+                    .frame(width: 375)
                     .padding(10)
                     .background(AudioToyStyle.surfaceDark)
                 }
@@ -61,25 +60,25 @@ public struct AudioToysMainView: View {
                     .background(Color.black.opacity(0.6))
             }
         }
-        .frame(minWidth: 820, minHeight: 580)
+        .frame(minWidth: 880, minHeight: 620)
     }
 
     // MARK: - Header Bar
 
     private var headerBar: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 14) {
             HStack(spacing: 8) {
                 Circle()
-                    .fill(appState.engine.isRunning ? AudioToyStyle.accentCyan : Color.gray)
+                    .fill(appState.engine.isRunning ? AudioToyStyle.accentEmerald : Color.gray)
                     .frame(width: 10, height: 10)
-                    .shadow(color: appState.engine.isRunning ? AudioToyStyle.accentCyan : .clear, radius: 4)
+                    .shadow(color: appState.engine.isRunning ? AudioToyStyle.accentEmerald : .clear, radius: 4)
 
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("AUDIOTOYS")
-                        .font(.system(size: 14, weight: .black, design: .monospaced))
+                    Text("AUDIOTOYS • BINAURAL ASMR STUDIO")
+                        .font(.system(size: 13, weight: .black, design: .monospaced))
                         .foregroundColor(AudioToyStyle.textPrimary)
 
-                    Text("Realtime 3D Spatial Audio • AirPods Pro HRTF")
+                    Text("HRTFHQ Near-Field Spatial Audio • 5-Stage Acoustic DSP Filter Chain")
                         .font(.system(size: 9, weight: .regular))
                         .foregroundColor(AudioToyStyle.textMuted)
                 }
@@ -87,9 +86,28 @@ public struct AudioToysMainView: View {
 
             Spacer()
 
+            // Near-Field ASMR Proximity Boost Slider
+            HStack(spacing: 5) {
+                Text("PROXIMITY:")
+                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                    .foregroundColor(AudioToyStyle.accentEmerald)
+
+                Slider(value: Binding(
+                    get: { Double(appState.engine.asmrProximityBoost) },
+                    set: { appState.engine.asmrProximityBoost = Float($0) }
+                ), in: 0.0...1.5)
+                .frame(width: 70)
+                .accentColor(AudioToyStyle.accentEmerald)
+
+                Text(String(format: "%d%%", Int((appState.engine.asmrProximityBoost * 100.0).rounded())))
+                    .font(.system(size: 8.5, weight: .semibold, design: .monospaced))
+                    .foregroundColor(AudioToyStyle.textSecondary)
+                    .frame(width: 30, alignment: .leading)
+            }
+
             // Reverb Selector
             HStack(spacing: 4) {
-                Text("REVERB:")
+                Text("ROOM:")
                     .font(.system(size: 9, weight: .bold, design: .monospaced))
                     .foregroundColor(AudioToyStyle.textMuted)
 
@@ -102,7 +120,7 @@ public struct AudioToysMainView: View {
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
-                .frame(width: 135)
+                .frame(width: 125)
             }
 
             // Master Volume
@@ -113,7 +131,7 @@ public struct AudioToysMainView: View {
                     get: { Double(appState.engine.masterVolume) },
                     set: { appState.engine.masterVolume = Float($0) }
                 ), in: 0.0...1.0)
-                .frame(width: 80)
+                .frame(width: 75)
                 .accentColor(AudioToyStyle.accentCyan)
             }
 
@@ -145,7 +163,7 @@ public struct AudioToysMainView: View {
 
     private var footerBar: some View {
         HStack {
-            Text("Engine: AVAudioEnvironmentNode (HRTFHQ Binaural)")
+            Text("DSP Chain: HPF → 165Hz Proximity Shelf → Formant EQ → 7.5kHz Air / Pinna LPF → Transient Exciter → HRTFHQ")
                 .font(.system(size: 9, weight: .medium, design: .monospaced))
                 .foregroundColor(AudioToyStyle.textMuted)
 
@@ -166,13 +184,13 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         let contentView = AudioToysMainView(appState: appState)
 
         window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 880, height: 640),
+            contentRect: NSRect(x: 0, y: 0, width: 920, height: 660),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
         )
         window.center()
-        window.title = "AudioToys"
+        window.title = "AudioToys — Binaural ASMR & Spatial Audio Studio"
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)

@@ -2,27 +2,21 @@ import Foundation
 
 public struct ThemeLoader {
     public static func syncDefaultThemesToDisk(directory: URL) {
-        try? FileManager.default.createDirectory(at: dirPath(directory), withIntermediateDirectories: true)
+        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
         for theme in ThemeLibrary.defaultThemes {
             let fileUrl = directory.appendingPathComponent("\(theme.id).json")
-            if !FileManager.default.fileExists(atPath: fileUrl.path) {
-                if let data = try? encoder.encode(theme) {
-                    try? data.write(to: fileUrl)
-                }
+            if let data = try? encoder.encode(theme) {
+                try? data.write(to: fileUrl)
             }
         }
     }
 
-    private static func dirPath(_ url: URL) -> URL {
-        return url
-    }
-
     public static func loadThemes(from directory: URL) -> [Theme] {
-        var themes: [Theme] = []
+        var loadedById: [String: Theme] = [:]
         let fm = FileManager.default
 
         if let files = try? fm.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil) {
@@ -30,15 +24,29 @@ public struct ThemeLoader {
             for file in files where file.pathExtension == "json" {
                 if let data = try? Data(contentsOf: file),
                    let theme = try? decoder.decode(Theme.self, from: data) {
-                    themes.append(theme)
+                    loadedById[theme.id] = theme
                 }
             }
         }
 
-        if themes.isEmpty {
+        if loadedById.isEmpty {
             return ThemeLibrary.defaultThemes
         }
-        return themes
+
+        // Preserve curated order for built-in themes, then append any custom user JSON themes
+        var ordered: [Theme] = []
+        let defaultIds = Set(ThemeLibrary.defaultThemes.map { $0.id })
+        for def in ThemeLibrary.defaultThemes {
+            if let t = loadedById[def.id] {
+                ordered.append(t)
+            } else {
+                ordered.append(def)
+            }
+        }
+        for (id, customTheme) in loadedById where !defaultIds.contains(id) {
+            ordered.append(customTheme)
+        }
+        return ordered
     }
 
     public static func instantiate(theme: Theme) -> [AudioLayer] {

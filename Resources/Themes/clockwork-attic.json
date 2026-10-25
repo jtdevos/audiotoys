@@ -2,10 +2,10 @@
   "id" : "clockwork-attic",
   "layers" : [
     {
-      "colorHex" : "#B78628",
-      "id" : "94FF24C8-C0A0-49E3-95C3-9F604490FC02",
-      "motionScript" : "static x=-2.0 y=0.0 z=0.6",
-      "name" : "Grandfather Clock",
+      "colorHex" : "#FCCF31",
+      "id" : "4118A517-9494-455A-A641-4D415A3AD991",
+      "motionScript" : "expr x=0.32*sin(0.35*t); y=-0.04; z=-0.26*cos(0.35*t)",
+      "name" : "Close Pocket Watch Tick",
       "source" : {
         "audioFile" : {
           "interval" : 0,
@@ -13,45 +13,53 @@
           "path" : "Resources\/Samples\/clock_tick.wav"
         }
       },
-      "volume" : 0.6
+      "volume" : 0.84
     },
     {
-      "colorHex" : "#FCCF31",
-      "id" : "CA9AB79A-5705-4E2B-8F09-FA1E8D7A42DC",
-      "motionScript" : "pendulum length=1.8 angle=42 freq=0.9 axis=x",
-      "name" : "Swinging Pocket Watch",
+      "colorHex" : "#00F5D4",
+      "id" : "2D2BAD60-F798-4AE9-AAA9-B02C537E8FF5",
+      "motionScript" : "static x=0.24 y=-0.08 z=-0.16",
+      "name" : "Crown Ratchet Winding",
       "source" : {
-        "procedural" : {
-          "_0" : {
-            "granularImpulse" : {
-              "density" : 2,
-              "type" : "clocktick"
-            }
-          }
+        "audioFile" : {
+          "interval" : 6.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/watch_winding.wav"
         }
       },
-      "volume" : 0.75
+      "volume" : 0.76
+    },
+    {
+      "colorHex" : "#B78628",
+      "id" : "AB85E8A6-F6F7-482D-A52F-888A5B22420F",
+      "motionScript" : "static x=-0.85 y=0.05 z=-0.65",
+      "name" : "Corner Grandfather Clock",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/grandfather_clock.wav"
+        }
+      },
+      "volume" : 0.72
     },
     {
       "colorHex" : "#F5576C",
-      "id" : "F4E40FFA-E73E-4830-8842-463A2C274DD3",
-      "motionScript" : "orbit radius=1.9 speed=0.45 height=0.1 phase=0.8",
-      "name" : "Automaton Music Box",
+      "id" : "91D63607-4699-4B36-899A-E5177AF022F3",
+      "motionScript" : "orbit radius=0.65 speed=0.16 height=0.08 phase=1.2",
+      "name" : "Wound-Up Music Box",
       "source" : {
-        "procedural" : {
-          "_0" : {
-            "pluckedString" : {
-              "baseFreq" : 523.25,
-              "interval" : 1.6
-            }
-          }
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/music_box_lullaby.wav"
         }
       },
-      "volume" : 0.7
+      "volume" : 0.66
     }
   ],
-  "moodDescription" : "Step into an eccentric horologist’s attic where pocket watches swing past your face, grandfather clocks chime in corners, and musical automatons circle.",
+  "moodDescription" : "Step inside a quiet master horologist's bench: a close-up pocket watch ticks past your ears, a mechanical watch crown winds with crisp ratchet clicks, a grandfather clock resonates in the corner, and an antique wound-up music box plays.",
   "reverbPreset" : "Small Room",
-  "subtitle" : "Antique escapements & swinging pendulum",
+  "subtitle" : "Antique Escapements, Crown Winding & Mechanical Music Box",
   "title" : "Clockwork Attic"
 }

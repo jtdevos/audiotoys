@@ -22,9 +22,9 @@ struct AudioToysAppLauncher {
                 return
 
             case "demo":
-                print("Running 4-second audio pipeline verification demo...")
+                print("Running 4-second binaural ASMR & spatial audio pipeline verification demo...")
                 let tui = TerminalUI()
-                tui.runTheme(themeId: "midnight-meadow", durationSeconds: 4.0)
+                tui.runTheme(themeId: "barber-shop", durationSeconds: 4.0)
                 print("Verification demo completed successfully!")
                 return
 
