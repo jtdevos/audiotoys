@@ -69,7 +69,7 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
             channels: 2
         )!
 
-        engine.connect(environmentNode, to: engine.mainMixerNode, format: envFormat)
+        connectNodes(environmentNode, to: engine.mainMixerNode, format: envFormat)
 
         // Apple High-Quality HRTF binaural spatial rendering for AirPods Pro & headphones
         environmentNode.renderingAlgorithm = .HRTFHQ
@@ -136,9 +136,6 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
     public func removeAllLayers() {
         for layer in activeLayers {
             if let node = layer.audioNode {
-                if let player = layer.playerNode {
-                    player.stop()
-                }
                 engine.disconnectNodeOutput(node)
                 engine.detach(node)
             }
@@ -199,7 +196,7 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
         }
 
         engine.attach(sourceNode)
-        engine.connect(sourceNode, to: environmentNode, format: standardFormat)
+        connectNodes(sourceNode, to: environmentNode, format: standardFormat)
         layer.audioNode = sourceNode
 
         // Configure 3D HRTF mixing
@@ -214,6 +211,14 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
 
         if isEngineRunning && !engine.isRunning {
             try? engine.start()
+        }
+    }
+
+    private func connectNodes(_ source: AVAudioNode, to destination: AVAudioNode, format: AVAudioFormat?) {
+        if #available(macOS 27.0, *) {
+            try? engine.connectNode(source, to: destination, format: format)
+        } else {
+            engine.connect(source, to: destination, format: format)
         }
     }
 
