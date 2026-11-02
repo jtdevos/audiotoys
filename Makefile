@@ -18,6 +18,19 @@ app: build
 	@mkdir -p $(APP_BUNDLE)/Contents/MacOS $(APP_BUNDLE)/Contents/Resources
 	@cp audiotoys $(APP_BUNDLE)/Contents/MacOS/AudioToys
 	@cp -r Resources $(APP_BUNDLE)/Contents/Resources/ 2>/dev/null || true
+	@printf '%s\n' \
+		'<?xml version="1.0" encoding="UTF-8"?>' \
+		'<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
+		'<plist version="1.0">' \
+		'<dict>' \
+		'  <key>CFBundleExecutable</key><string>AudioToys</string>' \
+		'  <key>CFBundleIdentifier</key><string>com.audiotoys.studio</string>' \
+		'  <key>CFBundleName</key><string>AudioToys</string>' \
+		'  <key>CFBundlePackageType</key><string>APPL</string>' \
+		'  <key>CFBundleShortVersionString</key><string>1.0</string>' \
+		'  <key>NSMotionUsageDescription</key><string>AudioToys uses AirPods motion sensors for real-time 3D binaural head tracking.</string>' \
+		'</dict>' \
+		'</plist>' > $(APP_BUNDLE)/Contents/Info.plist
 	@chmod +x $(APP_BUNDLE)/Contents/MacOS/AudioToys
 	@echo "✅ Packaged macOS application: $(APP_BUNDLE)"
 

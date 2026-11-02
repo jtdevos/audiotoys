@@ -209,34 +209,39 @@ public struct RadarView: View {
     // MARK: - Listener Marker (Center)
 
     private func listenerMarker(center: CGPoint) -> some View {
-        ZStack {
+        let yawDeg = Double(appState.engine.listenerYawDegrees)
+        return ZStack {
             // Subtle pulse ring
             Circle()
                 .stroke(AudioToyStyle.accentCyan.opacity(0.35), lineWidth: 1.5)
                 .frame(width: 44, height: 44)
 
-            // Head silhouette
-            Circle()
-                .fill(Color(white: 0.16))
-                .frame(width: 28, height: 28)
-                .overlay(Circle().stroke(Color.white.opacity(0.45), lineWidth: 1))
+            // Rotatable Head + AirPods + Nose indicator
+            ZStack {
+                // Head silhouette
+                Circle()
+                    .fill(Color(white: 0.16))
+                    .frame(width: 28, height: 28)
+                    .overlay(Circle().stroke(Color.white.opacity(0.45), lineWidth: 1))
 
-            // Forward nose indicator pointing to -Z (up on radar)
-            Triangle()
-                .fill(AudioToyStyle.accentCyan)
-                .frame(width: 8, height: 6)
-                .offset(y: -16)
+                // Forward nose indicator pointing to -Z (up on radar at 0° yaw)
+                Triangle()
+                    .fill(AudioToyStyle.accentCyan)
+                    .frame(width: 8, height: 6)
+                    .offset(y: -16)
 
-            // Left & Right AirPods Pro icons
-            RoundedRectangle(cornerRadius: 2)
-                .fill(Color.white)
-                .frame(width: 4, height: 9)
-                .offset(x: -16, y: 0)
+                // Left & Right AirPods Pro icons
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(Color.white)
+                    .frame(width: 4, height: 9)
+                    .offset(x: -16, y: 0)
 
-            RoundedRectangle(cornerRadius: 2)
-                .fill(Color.white)
-                .frame(width: 4, height: 9)
-                .offset(x: 16, y: 0)
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(Color.white)
+                    .frame(width: 4, height: 9)
+                    .offset(x: 16, y: 0)
+            }
+            .rotationEffect(.degrees(yawDeg))
 
             Text("YOU")
                 .font(.system(size: 7, weight: .heavy, design: .monospaced))

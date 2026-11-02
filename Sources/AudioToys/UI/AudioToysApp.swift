@@ -86,6 +86,48 @@ public struct AudioToysMainView: View {
 
             Spacer()
 
+            // AirPods Pro / Head Orientation Tracking Toggle + Recenter
+            HStack(spacing: 4) {
+                Button(action: {
+                    appState.engine.isHeadTrackingEnabled.toggle()
+                    appState.objectWillChange.send()
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "airpodspro")
+                            .font(.system(size: 9.5, weight: .bold))
+                        Text(appState.engine.isHeadTrackingEnabled ? String(format: "HEAD %+.0f°", appState.engine.listenerYawDegrees) : "HEAD TRACK")
+                            .font(.system(size: 8.5, weight: .bold, design: .monospaced))
+                    }
+                    .foregroundColor(appState.engine.isHeadTrackingEnabled ? .black : AudioToyStyle.accentCyan)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .background(appState.engine.isHeadTrackingEnabled ? AudioToyStyle.accentCyan : AudioToyStyle.accentCyan.opacity(0.12))
+                    .cornerRadius(4)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(AudioToyStyle.accentCyan.opacity(0.4), lineWidth: 1)
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+                .help("Toggle AirPods Pro dynamic head tracking (or drag 'YOU' on the radar to rotate head orientation)")
+
+                if appState.engine.isHeadTrackingEnabled || abs(appState.engine.listenerYawDegrees) > 0.5 {
+                    Button(action: {
+                        appState.engine.recenterHeadOrientation()
+                        appState.objectWillChange.send()
+                    }) {
+                        Image(systemName: "scope")
+                            .font(.system(size: 9.5, weight: .bold))
+                            .foregroundColor(AudioToyStyle.textSecondary)
+                            .frame(width: 22, height: 22)
+                            .background(Color.white.opacity(0.08))
+                            .cornerRadius(4)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .help("Recenter listener head orientation to 0° front")
+                }
+            }
+
             // Near-Field ASMR Proximity Boost Slider
             HStack(spacing: 5) {
                 Text("PROXIMITY:")

@@ -52,12 +52,56 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
     @Published public private(set) var activeLayers: [AudioLayer] = []
     @Published public private(set) var elapsedTime: Float = 0.0
 
+    // Dynamic AirPods Pro / Headphone Head Tracking & Listener Orientation
+    @Published public var isHeadTrackingEnabled: Bool = false {
+        didSet {
+            if isHeadTrackingEnabled {
+                headTracker.start()
+            } else {
+                headTracker.stop()
+                updateListenerOrientation(yawDegrees: 0, pitchDegrees: 0, rollDegrees: 0)
+            }
+        }
+    }
+    @Published public private(set) var isHeadphoneConnected: Bool = false
+    @Published public private(set) var listenerYawDegrees: Float = 0.0
+    @Published public private(set) var listenerPitchDegrees: Float = 0.0
+    @Published public private(set) var listenerRollDegrees: Float = 0.0
+
+    public let headTracker = HeadphoneMotionTracker()
+
     private var displayTimer: Timer?
     private let startTime: Date = Date()
     private let standardFormat = AVAudioFormat(standardFormatWithSampleRate: 44100.0, channels: 1)!
 
     public init() {
         setupEngine()
+        setupHeadTrackerCallbacks()
+    }
+
+    private func setupHeadTrackerCallbacks() {
+        headTracker.onConnectionChange = { [weak self] connected in
+            self?.isHeadphoneConnected = connected
+        }
+        headTracker.onOrientationUpdate = { [weak self] yaw, pitch, roll in
+            self?.updateListenerOrientation(yawDegrees: yaw, pitchDegrees: pitch, rollDegrees: roll)
+        }
+    }
+
+    public func updateListenerOrientation(yawDegrees: Float, pitchDegrees: Float = 0.0, rollDegrees: Float = 0.0) {
+        listenerYawDegrees = yawDegrees
+        listenerPitchDegrees = pitchDegrees
+        listenerRollDegrees = rollDegrees
+        environmentNode.listenerAngularOrientation = AVAudio3DAngularOrientation(
+            yaw: yawDegrees,
+            pitch: pitchDegrees,
+            roll: rollDegrees
+        )
+    }
+
+    public func recenterHeadOrientation() {
+        headTracker.recenter()
+        updateListenerOrientation(yawDegrees: 0, pitchDegrees: 0, rollDegrees: 0)
     }
 
     private func setupEngine() {
