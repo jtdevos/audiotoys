@@ -155,4 +155,59 @@ public final class AppState: ObservableObject, @unchecked Sendable {
             scriptStatus = "Reset to default"
         }
     }
+
+    // MARK: - Cross-Theme Layer Catalog & Mixing
+
+    public var availableCatalogLayers: [LayerDefinition] {
+        var seenNames = Set<String>()
+        var result: [LayerDefinition] = []
+        for theme in ThemeLibrary.defaultThemes {
+            for layerDef in theme.layers {
+                if !seenNames.contains(layerDef.name) {
+                    seenNames.insert(layerDef.name)
+                    result.append(layerDef)
+                }
+            }
+        }
+        return result
+    }
+
+    public func addLayerFromCatalog(_ def: LayerDefinition) {
+        let baseId = def.id
+        var uniqueId = baseId
+        var suffix = 2
+        while engine.activeLayers.contains(where: { $0.id == uniqueId }) {
+            uniqueId = "\(baseId)-\(suffix)"
+            suffix += 1
+        }
+
+        let motion = MotionScript()
+        motion.parse(script: def.motionScript)
+        let newLayer = AudioLayer(
+            id: uniqueId,
+            name: def.name,
+            colorHex: def.colorHex,
+            source: def.source,
+            motionScript: motion,
+            volume: def.volume
+        )
+        engine.addLayer(newLayer)
+        selectLayer(withId: newLayer.id)
+        scriptStatus = "Added \(def.name)"
+        objectWillChange.send()
+    }
+
+    public func removeLayer(withId id: String) {
+        guard engine.activeLayers.count > 1 else { return }
+        engine.removeLayer(withId: id)
+        if selectedLayerId == id {
+            if let first = engine.activeLayers.first {
+                selectLayer(withId: first.id)
+            } else {
+                selectedLayerId = nil
+            }
+        }
+        scriptStatus = "Removed layer"
+        objectWillChange.send()
+    }
 }

@@ -10,6 +10,31 @@ public struct LayerListView: View {
                     .font(.system(size: 10, weight: .bold, design: .monospaced))
                     .foregroundColor(AudioToyStyle.textMuted)
                 Spacer()
+
+                // Cross-theme layer catalog menu
+                Menu {
+                    ForEach(ThemeLibrary.defaultThemes) { theme in
+                        Menu(theme.title) {
+                            ForEach(theme.layers) { layerDef in
+                                Button(action: {
+                                    appState.addLayerFromCatalog(layerDef)
+                                }) {
+                                    Text(layerDef.name)
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 3) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 9, weight: .bold))
+                        Text("ADD LAYER")
+                            .font(.system(size: 8.5, weight: .bold, design: .monospaced))
+                    }
+                    .foregroundColor(AudioToyStyle.accentEmerald)
+                }
+                .menuStyle(BorderlessButtonMenuStyle())
+                .frame(width: 86)
             }
             .padding(.horizontal, 10)
 
@@ -119,6 +144,24 @@ private struct LayerRowView: View {
         let soloBg: Color = layer.isSolo ? Color.yellow.opacity(0.2) : Color.white.opacity(0.06)
 
         return HStack(spacing: 3) {
+            // Manual Trigger / Audition button for periodic foley & procedural voices
+            if layer.isPeriodicOrTriggerable {
+                Button(action: {
+                    appState.selectLayer(withId: layer.id)
+                    layer.triggerAudioFile()
+                    appState.scriptStatus = "Triggered \(layer.name)"
+                }) {
+                    Image(systemName: "bolt.fill")
+                        .font(.system(size: 8.5, weight: .bold))
+                        .foregroundColor(AudioToyStyle.accentCyan)
+                        .frame(width: 18, height: 18)
+                        .background(AudioToyStyle.accentCyan.opacity(0.16))
+                        .cornerRadius(3)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .help("Trigger / Audition sound immediately")
+            }
+
             // Pin / Resume motion button
             Button(action: {
                 appState.selectLayer(withId: layer.id)
@@ -167,6 +210,21 @@ private struct LayerRowView: View {
             }
             .buttonStyle(PlainButtonStyle())
             .help("Solo layer")
+
+            if appState.engine.activeLayers.count > 1 {
+                Button(action: {
+                    appState.removeLayer(withId: layer.id)
+                }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 7.5, weight: .bold))
+                        .foregroundColor(AudioToyStyle.textMuted)
+                        .frame(width: 16, height: 18)
+                        .background(Color.white.opacity(0.05))
+                        .cornerRadius(3)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .help("Remove layer from current mix")
+            }
         }
     }
 
