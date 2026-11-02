@@ -81,3 +81,32 @@ import Testing
     #expect(script.rawScript.contains("radius=0.45"))
 }
 
+@Test func layerTriggerIntervalAndCrossThemeMixing() throws {
+    let coughLayer = AudioLayer(
+        id: "cough",
+        name: "Occasional Distant Cough",
+        source: .audioFile(path: "Resources/Samples/classroom_cough.wav", isLooping: false, interval: 18.0),
+        motionScript: MotionScript.fixed(at: Vector3(-0.7, 0, 0.4))
+    )
+    #expect(coughLayer.isPeriodicOrTriggerable == true)
+    #expect(coughLayer.triggerInterval == 18.0)
+
+    coughLayer.updateTriggerInterval(6.5)
+    #expect(coughLayer.triggerInterval == 6.5)
+
+    let state = AppState(autoStartEngine: false)
+    let initialCount = state.engine.activeLayers.count
+    let catalog = state.availableCatalogLayers
+    #expect(!catalog.isEmpty)
+
+    let extraDef = try #require(catalog.first)
+    state.addLayerFromCatalog(extraDef)
+    #expect(state.engine.activeLayers.count == initialCount + 1)
+
+    if let addedId = state.selectedLayerId {
+        state.removeLayer(withId: addedId)
+        #expect(state.engine.activeLayers.count == initialCount)
+    }
+}
+
+

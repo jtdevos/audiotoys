@@ -143,6 +143,16 @@ public final class SpatialAudioEngine: ObservableObject, @unchecked Sendable {
         activeLayers.removeAll()
     }
 
+    public func removeLayer(withId id: String) {
+        guard let idx = activeLayers.firstIndex(where: { $0.id == id }) else { return }
+        let layer = activeLayers[idx]
+        if let node = layer.audioNode {
+            engine.disconnectNodeOutput(node)
+            engine.detach(node)
+        }
+        activeLayers.remove(at: idx)
+    }
+
     public func addLayer(_ layer: AudioLayer) {
         let isEngineRunning = engine.isRunning
         layer.filterChain.proximityIntensity = asmrProximityBoost

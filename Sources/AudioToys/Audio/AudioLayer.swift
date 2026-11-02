@@ -169,7 +169,55 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
     }
 
     public func triggerAudioFile() {
-        dspVoice?.triggerNote(pitchHz: 440.0, velocity: 0.9)
+        switch source {
+        case .procedural(.fmBell(let baseFreq, _, _)), .procedural(.pluckedString(let baseFreq, _)):
+            dspVoice?.triggerNote(pitchHz: baseFreq, velocity: 0.9)
+        default:
+            dspVoice?.triggerNote(pitchHz: 440.0, velocity: 0.9)
+        }
         activityLevel = 0.85
+        objectWillChange.send()
+    }
+
+    public var isPeriodicOrTriggerable: Bool {
+        switch source {
+        case .audioFile(_, let isLooping, _):
+            return !isLooping
+        case .procedural(.fmBell), .procedural(.pluckedString), .procedural(.granularImpulse), .procedural(.mainframeChatter):
+            return true
+        default:
+            return false
+        }
+    }
+
+    public var triggerInterval: Double? {
+        switch source {
+        case .audioFile(_, let isLooping, let interval):
+            return isLooping ? nil : max(0.5, interval)
+        case .procedural(.fmBell(_, _, let interval)):
+            return max(0.5, interval)
+        case .procedural(.pluckedString(_, let interval)):
+            return max(0.5, interval)
+        default:
+            return nil
+        }
+    }
+
+    public func updateTriggerInterval(_ newInterval: Double) {
+        let clamped = max(1.0, min(30.0, (newInterval * 10.0).rounded() / 10.0))
+        switch source {
+        case .audioFile(let path, false, _):
+            source = .audioFile(path: path, isLooping: false, interval: clamped)
+            (dspVoice as? OrganicSampleStreamer)?.triggerInterval = clamped
+        case .procedural(.fmBell(let baseFreq, let modRatio, _)):
+            source = .procedural(.fmBell(baseFreq: baseFreq, modRatio: modRatio, interval: clamped))
+            (dspVoice as? FMBellVoice)?.autoTriggerInterval = clamped
+        case .procedural(.pluckedString(let baseFreq, _)):
+            source = .procedural(.pluckedString(baseFreq: baseFreq, interval: clamped))
+            (dspVoice as? PluckedStringVoice)?.autoTriggerInterval = clamped
+        default:
+            break
+        }
+        objectWillChange.send()
     }
 }

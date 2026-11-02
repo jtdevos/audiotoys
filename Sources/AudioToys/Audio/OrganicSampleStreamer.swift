@@ -169,11 +169,16 @@ public final class OrganicSampleStreamer: DSPVoice, @unchecked Sendable {
             for i in 0..<frameCount {
                 timeAccumulator += dt
 
-                if triggerInterval > 0 && timeAccumulator >= nextTriggerTime {
-                    triggerOrganicSlice(velocity: Float.random(in: 0.85...1.0))
-                    // Add organic human timing jitter (±16%)
-                    let jitteredInterval = triggerInterval * Double.random(in: 0.84...1.16)
-                    nextTriggerTime = timeAccumulator + max(0.35, jitteredInterval)
+                if triggerInterval > 0 {
+                    if nextTriggerTime - timeAccumulator > triggerInterval * 1.2 {
+                        nextTriggerTime = timeAccumulator + triggerInterval
+                    }
+                    if timeAccumulator >= nextTriggerTime {
+                        triggerOrganicSlice(velocity: Float.random(in: 0.85...1.0))
+                        // Add organic human timing jitter (±16%)
+                        let jitteredInterval = triggerInterval * Double.random(in: 0.84...1.16)
+                        nextTriggerTime = timeAccumulator + max(0.35, jitteredInterval)
+                    }
                 }
 
                 if isPlayingA {

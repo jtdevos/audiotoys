@@ -53,6 +53,27 @@ private struct LayerInspectorContentView: View {
                     .foregroundColor(appState.isScriptError ? .red : AudioToyStyle.accentEmerald)
                     .lineLimit(1)
 
+                if layer.isPeriodicOrTriggerable {
+                    Button(action: {
+                        layer.triggerAudioFile()
+                        appState.scriptStatus = "Triggered \(layer.name)"
+                    }) {
+                        HStack(spacing: 3) {
+                            Image(systemName: "bolt.fill")
+                                .font(.system(size: 7.5, weight: .bold))
+                            Text("TRIGGER")
+                                .font(.system(size: 8, weight: .bold, design: .monospaced))
+                        }
+                        .foregroundColor(.black)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2.5)
+                        .background(AudioToyStyle.accentCyan)
+                        .cornerRadius(3)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .help("Fire one-shot trigger immediately")
+                }
+
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.15)) {
                         showRawScriptEditor.toggle()
@@ -262,6 +283,23 @@ private struct LayerInspectorContentView: View {
                         tint: color
                     )
                 }
+            }
+
+            // Periodic Trigger Interval Slider (if applicable)
+            if let currentInterval = layer.triggerInterval {
+                sliderRow(
+                    label: "INTERVAL",
+                    valueText: String(format: "%.1fs", currentInterval),
+                    value: Binding(
+                        get: { currentInterval },
+                        set: { newInt in
+                            layer.updateTriggerInterval(newInt)
+                            appState.objectWillChange.send()
+                        }
+                    ),
+                    range: 1.0...25.0,
+                    tint: AudioToyStyle.accentEmerald
+                )
             }
 
             // Collapsible Raw Script Editor for Custom Math Expressions
