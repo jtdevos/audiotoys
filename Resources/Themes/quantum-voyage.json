@@ -1,0 +1,93 @@
+{
+  "id" : "quantum-voyage",
+  "layers" : [
+    {
+      "colorHex" : "#7B2CBF",
+      "id" : "gravimetric-warp-core",
+      "motionScript" : "static x=0.0 y=-0.55 z=-0.30",
+      "name" : "Gravimetric Warp Core",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "subtractiveDrone" : {
+              "detune" : 6.5,
+              "fundamental" : 55
+            }
+          }
+        }
+      },
+      "volume" : 0.72
+    },
+    {
+      "colorHex" : "#00F5D4",
+      "id" : "cosmic-pulsar-chimes",
+      "motionScript" : "lissajous xR=0.58 yR=0.22 zR=0.52 xF=0.14 yF=0.21 zF=0.11",
+      "name" : "Cosmic Pulsar Chimes",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "fmBell" : {
+              "baseFreq" : 293.66,
+              "interval" : 4.8,
+              "modRatio" : 2.756
+            }
+          }
+        }
+      },
+      "volume" : 0.68
+    },
+    {
+      "colorHex" : "#4CC9F0",
+      "id" : "solar-magnetosphere-breeze",
+      "motionScript" : "spiral min=0.35 max=0.85 speed=0.10 vSpeed=0.08 vAmp=0.20",
+      "name" : "Solar Magnetosphere Breeze",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "filteredNoise" : {
+              "cutoff" : 420,
+              "resonance" : 1.8,
+              "type" : "pink"
+            }
+          }
+        }
+      },
+      "volume" : 0.58
+    },
+    {
+      "colorHex" : "#F72585",
+      "id" : "orbital-koto-harmonics",
+      "motionScript" : "orbit radius=0.52 speed=0.13 height=0.12 phase=1.57",
+      "name" : "Orbital Koto Harmonics",
+      "source" : {
+        "procedural" : {
+          "_0" : {
+            "pluckedString" : {
+              "baseFreq" : 220,
+              "interval" : 3.6
+            }
+          }
+        }
+      },
+      "volume" : 0.6
+    },
+    {
+      "colorHex" : "#FFD166",
+      "id" : "observatory-nav-telemetry",
+      "motionScript" : "static x=0.34 y=0.10 z=-0.42",
+      "name" : "Observatory Nav Telemetry",
+      "source" : {
+        "audioFile" : {
+          "interval" : 9.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/nostromo_muthur_beeps.wav"
+        }
+      },
+      "volume" : 0.45
+    }
+  ],
+  "moodDescription" : "Adrift inside a glass-domed deep-space observatory: a warm gravimetric warp core hums beneath the deck, crystalline pulsar harmonics and cosmic harp strings drift in wide 3D Lissajous orbits, and navigational telemetry pings softly.",
+  "reverbPreset" : "Large Chamber",
+  "subtitle" : "Deep-Space Observatory • Warp Core, Cosmic Pulsar Bells & Solar Wind",
+  "title" : "Quantum Voyage"
+}

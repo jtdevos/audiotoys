@@ -25,12 +25,8 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
     public var motionScript: MotionScript
     public let filterChain: AcousticFilterChain
 
-    @Published public var volume: Float = 1.0 {
-        didSet { updateVolume() }
-    }
-    @Published public var isMuted: Bool = false {
-        didSet { updateVolume() }
-    }
+    @Published public var volume: Float = 1.0
+    @Published public var isMuted: Bool = false
     @Published public var isSolo: Bool = false
     @Published public var isMotionPaused: Bool = false
     @Published public var savedMotionScriptBeforePin: String? = nil
@@ -43,8 +39,6 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
     // CoreAudio node references
     public var environmentNode: AVAudioEnvironmentNode?
     public var audioNode: AVAudioNode?
-    public var playerNode: AVAudioPlayerNode?
-    public var audioFile: AVAudioFile?
     public var dspVoice: DSPVoice?
 
     private var maxTrailPoints: Int = 28
@@ -172,11 +166,6 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
             motionScript = restored
         }
         objectWillChange.send()
-    }
-
-    public func updateVolume() {
-        let effectiveVol: Float = isMuted ? 0.0 : volume
-        playerNode?.volume = effectiveVol
     }
 
     public func triggerAudioFile() {

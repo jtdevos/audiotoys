@@ -309,6 +309,52 @@ public struct ThemeLibrary {
                         motionScript: "static x=-0.28 y=0.14 z=-0.38"
                     )
                 ]
+            ),
+
+            // 8. Quantum Voyage (Deep-Space Observatory, Warp Core & Cosmic Harmonics)
+            Theme(
+                id: "quantum-voyage",
+                title: "Quantum Voyage",
+                subtitle: "Deep-Space Observatory • Warp Core, Cosmic Pulsar Bells & Solar Wind",
+                moodDescription: "Adrift inside a glass-domed deep-space observatory: a warm gravimetric warp core hums beneath the deck, crystalline pulsar harmonics and cosmic harp strings drift in wide 3D Lissajous orbits, and navigational telemetry pings softly.",
+                reverbPreset: "Large Chamber",
+                layers: [
+                    LayerDefinition(
+                        name: "Gravimetric Warp Core",
+                        colorHex: "#7B2CBF",
+                        volume: 0.72,
+                        source: .procedural(.subtractiveDrone(fundamental: 55.0, detune: 6.5)),
+                        motionScript: "static x=0.0 y=-0.55 z=-0.30"
+                    ),
+                    LayerDefinition(
+                        name: "Cosmic Pulsar Chimes",
+                        colorHex: "#00F5D4",
+                        volume: 0.68,
+                        source: .procedural(.fmBell(baseFreq: 293.66, modRatio: 2.756, interval: 4.8)),
+                        motionScript: "lissajous xR=0.58 yR=0.22 zR=0.52 xF=0.14 yF=0.21 zF=0.11"
+                    ),
+                    LayerDefinition(
+                        name: "Solar Magnetosphere Breeze",
+                        colorHex: "#4CC9F0",
+                        volume: 0.58,
+                        source: .procedural(.filteredNoise(type: "pink", cutoff: 420.0, resonance: 1.8)),
+                        motionScript: "spiral min=0.35 max=0.85 speed=0.10 vSpeed=0.08 vAmp=0.20"
+                    ),
+                    LayerDefinition(
+                        name: "Orbital Koto Harmonics",
+                        colorHex: "#F72585",
+                        volume: 0.60,
+                        source: .procedural(.pluckedString(baseFreq: 220.0, interval: 3.6)),
+                        motionScript: "orbit radius=0.52 speed=0.13 height=0.12 phase=1.57"
+                    ),
+                    LayerDefinition(
+                        name: "Observatory Nav Telemetry",
+                        colorHex: "#FFD166",
+                        volume: 0.45,
+                        source: .audioFile(path: "Resources/Samples/nostromo_muthur_beeps.wav", isLooping: false, interval: 9.5),
+                        motionScript: "static x=0.34 y=0.10 z=-0.42"
+                    )
+                ]
             )
         ]
     }
