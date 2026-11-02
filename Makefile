@@ -5,7 +5,7 @@ SWIFT_FLAGS = -parse-as-library -module-cache-path .cache
 SOURCES = $(shell find Sources/AudioToys -name "*.swift")
 APP_BUNDLE = AudioToys.app
 
-.PHONY: all build app run demo list play-barber play-study play-nostromo play-meadow play-celestial play-rain play-clockwork clean
+.PHONY: all build app run demo list play-barber play-study play-nostromo play-meadow play-celestial play-rain play-clockwork play-quantum play-classroom play-coffee clean
 
 all: build app
 
@@ -53,6 +53,12 @@ play-clockwork: build
 
 play-quantum: build
 	./audiotoys play quantum-voyage
+
+play-classroom: build
+	./audiotoys play quiet-classroom
+
+play-coffee: build
+	./audiotoys play coffee-shop
 
 clean:
 	rm -rf audiotoys $(APP_BUNDLE) .cache

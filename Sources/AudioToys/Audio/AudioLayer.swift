@@ -77,10 +77,10 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
         if lower.contains("clipper") || lower.contains("trimmer") || lower.contains("shaver") || lower.contains("purr") {
             return .warmMotor
         }
-        if lower.contains("brush") || lower.contains("comb") || lower.contains("duster") || lower.contains("page") || lower.contains("pencil") {
+        if lower.contains("brush") || lower.contains("comb") || lower.contains("duster") || lower.contains("page") || lower.contains("pencil") || lower.contains("chalk") {
             return .velvetBrush
         }
-        if lower.contains("spray") || lower.contains("mist") || lower.contains("scalp") || lower.contains("shampoo") || lower.contains("towel") || lower.contains("whisper") {
+        if lower.contains("spray") || lower.contains("mist") || lower.contains("scalp") || lower.contains("shampoo") || lower.contains("towel") || lower.contains("whisper") || lower.contains("espresso") || lower.contains("steam") {
             return .intimateASMR
         }
         if lower.contains("wood") || lower.contains("clock") || lower.contains("watch") || lower.contains("hearth") || lower.contains("fire") || lower.contains("ember") {
@@ -89,7 +89,7 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
         if lower.contains("rumble") || lower.contains("thunder") || lower.contains("reactor") || lower.contains("warp") || lower.contains("cosmic") {
             return .deepSub
         }
-        if lower.contains("bowl") || lower.contains("chime") || lower.contains("harp") || lower.contains("music box") {
+        if lower.contains("bowl") || lower.contains("chime") || lower.contains("harp") || lower.contains("music box") || lower.contains("glass") || lower.contains("cup") || lower.contains("register") {
             return .crystalline
         }
         return .naturalFoley

@@ -1,0 +1,65 @@
+{
+  "id" : "quiet-classroom",
+  "layers" : [
+    {
+      "colorHex" : "#E0FBFC",
+      "id" : "soft-chalk-on-blackboard",
+      "motionScript" : "expr x=0.32*sin(0.28*t); y=0.10+0.04*cos(0.4*t); z=-0.58",
+      "name" : "Soft Chalk on Blackboard",
+      "source" : {
+        "audioFile" : {
+          "interval" : 7.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/chalk_writing.wav"
+        }
+      },
+      "volume" : 0.78
+    },
+    {
+      "colorHex" : "#FFD166",
+      "id" : "occasional-distant-cough",
+      "motionScript" : "static x=-0.72 y=-0.04 z=0.45",
+      "name" : "Occasional Distant Cough",
+      "source" : {
+        "audioFile" : {
+          "interval" : 18,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/classroom_cough.wav"
+        }
+      },
+      "volume" : 0.5
+    },
+    {
+      "colorHex" : "#4ECDC4",
+      "id" : "quiet-notebook-page-turn",
+      "motionScript" : "static x=0.38 y=-0.12 z=-0.22",
+      "name" : "Quiet Notebook Page Turn",
+      "source" : {
+        "audioFile" : {
+          "interval" : 13.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/page_turning.wav"
+        }
+      },
+      "volume" : 0.48
+    },
+    {
+      "colorHex" : "#98C1D9",
+      "id" : "faint-wall-clock-tick",
+      "motionScript" : "static x=-0.52 y=0.40 z=-0.65",
+      "name" : "Faint Wall Clock Tick",
+      "source" : {
+        "audioFile" : {
+          "interval" : 4,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/clock_tick.wav"
+        }
+      },
+      "volume" : 0.26
+    }
+  ],
+  "moodDescription" : "A peaceful, mostly silent afternoon classroom. Soft calcium-carbonate chalk glides across the front slate blackboard, a student turns a notebook page at a nearby desk, a faint wall clock ticks, and an occasional muffled cough echoes softly across the room.",
+  "reverbPreset" : "Small Room",
+  "subtitle" : "Quiet Study Hall • Soft Chalk on Slate, Sparse Page Rustle & Occasional Cough",
+  "title" : "Calm Classroom"
+}

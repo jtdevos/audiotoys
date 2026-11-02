@@ -65,6 +65,9 @@ make run
 | `celestial-orbits` | **Tibetan Sanctuary** | Hand-Hammered Singing Bowl, Koshi Chimes & Harmonium | 4.5" Tibetan Singing Bowl, Bamboo Koshi Wind Chimes, Modal Bronze Harmonics, Warm Harmonium Drone |
 | `clockwork-attic` | **Clockwork Attic** | Antique Escapements, Crown Winding & Mechanical Music Box | Close Pocket Watch Tick, Crown Ratchet Winding, Corner Grandfather Clock, Wound-Up Music Box |
 | `nostromo` | **Nostromo** | USCSS Commercial Freighter 180286 • Real Drive Seeks & Steam | Mechanical HDD Head Seeks, Platter Spindle Spin-Up, Pressurized Coolant Steam, Reactor Deck Sub-Rumble, MU-TH-UR Telemetry |
+| `quantum-voyage` | **Quantum Voyage** | Deep-Space Observatory • Warp Core, Cosmic Pulsar Bells & Solar Wind | Gravimetric Warp Core, Cosmic Pulsar Chimes, Solar Magnetosphere Breeze, Orbital Koto Harmonics, Observatory Nav Telemetry |
+| `quiet-classroom` | **Calm Classroom** | Quiet Study Hall • Soft Chalk on Slate, Sparse Page Rustle & Occasional Cough | Soft Chalk on Blackboard (`Velvet Brush & Comb`), Occasional Distant Cough, Quiet Notebook Page Turn, Faint Wall Clock Tick |
+| `coffee-shop` | **Coffee Shop** | Neighborhood Café • Glasses Tinkling, Cash Register, Steam Wand & Conversations | Glasses & Cups Tinkling (`Crystalline Harmonic`), Counter Cash Register, Warm Cafe Conversations, Espresso Steam Wand (`Intimate ASMR`), Corner Table Sketching |
 
 ---
 
