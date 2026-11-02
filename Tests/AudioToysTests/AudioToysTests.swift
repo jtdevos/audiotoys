@@ -109,4 +109,18 @@ import Testing
     }
 }
 
+@Test func headphoneOrientationAndRecenter() throws {
+    let engine = SpatialAudioEngine()
+    #expect(engine.listenerYawDegrees == 0.0)
+
+    engine.updateListenerOrientation(yawDegrees: 35.0, pitchDegrees: -5.0, rollDegrees: 2.0)
+    #expect(abs(engine.listenerYawDegrees - 35.0) < 0.01)
+    #expect(abs(engine.environmentNode.listenerAngularOrientation.yaw - 35.0) < 0.01)
+
+    engine.recenterHeadOrientation()
+    #expect(abs(engine.listenerYawDegrees) < 0.01)
+    #expect(abs(engine.environmentNode.listenerAngularOrientation.yaw) < 0.01)
+}
+
+
 
