@@ -15,16 +15,22 @@ public struct LayerListView: View {
 
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 6) {
-                    ForEach(appState.engine.activeLayers) { layer in
-                        layerRow(layer: layer)
+                    ForEach(Array(appState.engine.activeLayers.enumerated()), id: \.element.id) { index, layer in
+                        LayerRowView(layer: layer, appState: appState, index: index)
                     }
                 }
                 .padding(.horizontal, 8)
             }
         }
     }
+}
 
-    private func layerRow(layer: AudioLayer) -> some View {
+private struct LayerRowView: View {
+    @ObservedObject var layer: AudioLayer
+    @ObservedObject var appState: AppState
+    let index: Int
+
+    var body: some View {
         let isSelected = appState.selectedLayerId == layer.id
         let color = Color(hex: layer.colorHex)
         let profileText = layer.filterChain.profile.rawValue.uppercased()
@@ -32,21 +38,26 @@ public struct LayerListView: View {
         let coordText = String(format: "x:%+.2f y:%+.2f z:%+.2f",
                                layer.currentPosition.x, layer.currentPosition.y, layer.currentPosition.z)
         let distColor: Color = layer.proximityPercent > 35 ? AudioToyStyle.accentEmerald : AudioToyStyle.textSecondary
-        let rowBg: Color = isSelected ? Color.white.opacity(0.09) : AudioToyStyle.surfaceDark
-        let strokeColor: Color = isSelected ? color.opacity(0.6) : Color.white.opacity(0.06)
+        let rowBg: Color = isSelected ? Color.white.opacity(0.11) : AudioToyStyle.surfaceDark
+        let strokeColor: Color = isSelected ? color.opacity(0.75) : Color.white.opacity(0.06)
 
-        return HStack(spacing: 8) {
-            // Color & live activity indicator dot
+        HStack(spacing: 8) {
+            // Numbered badge matching radar node circle
             Circle()
-                .fill(color)
-                .frame(width: 8, height: 8)
+                .fill(layer.isMuted ? Color.gray.opacity(0.4) : color)
+                .frame(width: 16, height: 16)
                 .shadow(color: color.opacity(Double(layer.activityLevel)), radius: 4)
+                .overlay(
+                    Text("\(index + 1)")
+                        .font(.system(size: 9, weight: .black, design: .monospaced))
+                        .foregroundColor(.black)
+                )
 
             // Layer details
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
                     Text(layer.name)
-                        .font(.system(size: 11, weight: .semibold))
+                        .font(.system(size: 11, weight: isSelected ? .bold : .semibold))
                         .foregroundColor(AudioToyStyle.textPrimary)
                         .lineLimit(1)
 
@@ -74,15 +85,15 @@ public struct LayerListView: View {
                 }
             }
 
-            // Mute / Solo buttons
-            muteSoloButtons(layer: layer)
+            // Pin/Pause, Mute, Solo buttons
+            controlButtons
 
             // Volume Slider
             Slider(value: Binding(
                 get: { Double(layer.volume) },
                 set: { layer.volume = Float($0) }
             ), in: 0.0...1.0)
-            .frame(width: 60)
+            .frame(width: 56)
             .accentColor(color)
         }
         .padding(8)
@@ -90,20 +101,47 @@ public struct LayerListView: View {
         .cornerRadius(6)
         .overlay(
             RoundedRectangle(cornerRadius: 6)
-                .stroke(strokeColor, lineWidth: 1)
+                .stroke(strokeColor, lineWidth: isSelected ? 1.5 : 1)
         )
+        .contentShape(Rectangle())
         .onTapGesture {
             appState.selectLayer(withId: layer.id)
         }
     }
 
-    private func muteSoloButtons(layer: AudioLayer) -> some View {
+    private var controlButtons: some View {
+        let isPinned = layer.motionScript.type == .fixed || layer.isMotionPaused
+        let pinFg: Color = isPinned ? .orange : AudioToyStyle.textMuted
+        let pinBg: Color = isPinned ? Color.orange.opacity(0.2) : Color.white.opacity(0.06)
         let muteFg: Color = layer.isMuted ? .red : AudioToyStyle.textMuted
         let muteBg: Color = layer.isMuted ? Color.red.opacity(0.2) : Color.white.opacity(0.06)
         let soloFg: Color = layer.isSolo ? .yellow : AudioToyStyle.textMuted
         let soloBg: Color = layer.isSolo ? Color.yellow.opacity(0.2) : Color.white.opacity(0.06)
 
-        return HStack(spacing: 4) {
+        return HStack(spacing: 3) {
+            // Pin / Resume motion button
+            Button(action: {
+                appState.selectLayer(withId: layer.id)
+                if isPinned {
+                    layer.resumeSavedMotion()
+                    appState.scriptEditorText = layer.motionScript.rawScript
+                    appState.scriptStatus = "Resumed: \(layer.motionScript.type.rawValue)"
+                } else {
+                    layer.isMotionPaused = true
+                    appState.scriptStatus = "Paused at (\(String(format: "%.2f, %.2f", layer.currentPosition.x, layer.currentPosition.z)))"
+                }
+                appState.objectWillChange.send()
+            }) {
+                Image(systemName: isPinned ? "pin.fill" : "arrow.triangle.2.circlepath")
+                    .font(.system(size: 8.5, weight: .bold))
+                    .foregroundColor(pinFg)
+                    .frame(width: 18, height: 18)
+                    .background(pinBg)
+                    .cornerRadius(3)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .help(isPinned ? "Resume motion orbit/trajectory" : "Freeze / Pin source in place")
+
             Button(action: {
                 layer.isMuted.toggle()
             }) {
@@ -115,9 +153,10 @@ public struct LayerListView: View {
                     .cornerRadius(3)
             }
             .buttonStyle(PlainButtonStyle())
+            .help("Mute layer")
 
             Button(action: {
-                toggleSolo(layer: layer)
+                toggleSolo()
             }) {
                 Text("S")
                     .font(.system(size: 9, weight: .bold, design: .monospaced))
@@ -127,10 +166,11 @@ public struct LayerListView: View {
                     .cornerRadius(3)
             }
             .buttonStyle(PlainButtonStyle())
+            .help("Solo layer")
         }
     }
 
-    private func toggleSolo(layer: AudioLayer) {
+    private func toggleSolo() {
         layer.isSolo.toggle()
         let hasAnySolo = appState.engine.activeLayers.contains(where: { $0.isSolo })
 

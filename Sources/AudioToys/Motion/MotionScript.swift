@@ -350,4 +350,151 @@ public final class MotionScript: Codable, @unchecked Sendable {
             return Vector3(x, y, z)
         }
     }
+
+    // MARK: - Direct Parameter Manipulation (Slider Controls)
+
+    public var effectiveRadius: Float {
+        switch type {
+        case .fixed:
+            return fixedPosition.horizontalDistance
+        case .orbit, .wander:
+            return radius
+        case .spiral:
+            return (minRadius + maxRadius) * 0.5
+        case .lissajous:
+            return (xRadius + zRadius) * 0.5
+        case .pendulum:
+            return pendulumLength
+        case .flyby:
+            return flybyStart.horizontalDistance
+        case .customExpr:
+            return max(0.15, position(at: 0).horizontalDistance)
+        }
+    }
+
+    public var effectiveSpeed: Float {
+        switch type {
+        case .fixed:
+            return 0.0
+        case .orbit:
+            return abs(speed)
+        case .spiral, .wander:
+            return speed
+        case .lissajous:
+            return xFreq
+        case .pendulum:
+            return pendulumFreq
+        case .flyby:
+            return max(0.05, 1.0 / max(0.5, flybyDuration))
+        case .customExpr:
+            return speed
+        }
+    }
+
+    public var effectiveElevation: Float {
+        switch type {
+        case .fixed:
+            return fixedPosition.y
+        case .orbit, .spiral, .lissajous, .wander, .pendulum, .customExpr:
+            return height
+        case .flyby:
+            return flybyStart.y
+        }
+    }
+
+    public func updateRadius(_ newRadius: Float) {
+        let clamped = max(0.10, min(4.0, newRadius))
+        switch type {
+        case .fixed:
+            let horiz = fixedPosition.horizontalDistance
+            if horiz > 0.001 {
+                let scale = clamped / horiz
+                fixedPosition.x *= scale
+                fixedPosition.z *= scale
+            } else {
+                fixedPosition.z = -clamped
+            }
+            rawScript = String(format: "static x=%.2f y=%.2f z=%.2f", fixedPosition.x, fixedPosition.y, fixedPosition.z)
+        case .orbit:
+            radius = clamped
+            rawScript = String(format: "orbit radius=%.2f speed=%.2f height=%.2f phase=%.2f", radius, speed, height, phase)
+        case .wander:
+            radius = clamped
+            rawScript = String(format: "wander radius=%.2f speed=%.2f jitter=%.2f", radius, speed, wanderJitter)
+        case .spiral:
+            let spread = max(0.10, (maxRadius - minRadius) * 0.5)
+            minRadius = max(0.10, clamped - spread * 0.5)
+            maxRadius = clamped + spread * 0.5
+            rawScript = String(format: "spiral min=%.2f max=%.2f speed=%.2f vSpeed=%.2f vAmp=%.2f", minRadius, maxRadius, speed, verticalSpeed, verticalAmplitude)
+        case .lissajous:
+            xRadius = clamped
+            zRadius = clamped * 0.9
+            rawScript = String(format: "lissajous xR=%.2f yR=%.2f zR=%.2f xF=%.2f yF=%.2f zF=%.2f", xRadius, yRadius, zRadius, xFreq, yFreq, zFreq)
+        case .pendulum:
+            pendulumLength = clamped
+            rawScript = String(format: "pendulum length=%.2f angle=%.1f freq=%.2f axis=%@", pendulumLength, pendulumAngleDeg, pendulumFreq, pendulumAxis)
+        case .flyby:
+            flybyStart.x = -clamped
+            flybyEnd.x = clamped
+            rawScript = String(format: "flyby start=[%.2f,%.2f,%.2f] end=[%.2f,%.2f,%.2f] duration=%.1f pause=%.1f", flybyStart.x, flybyStart.y, flybyStart.z, flybyEnd.x, flybyEnd.y, flybyEnd.z, flybyDuration, flybyPause)
+        case .customExpr:
+            // Convert to orbit when user directly drags the radius slider on a custom expression
+            type = .orbit
+            radius = clamped
+            speed = 0.16
+            rawScript = String(format: "orbit radius=%.2f speed=%.2f height=%.2f phase=%.2f", radius, speed, height, phase)
+        }
+    }
+
+    public func updateSpeed(_ newSpeed: Float) {
+        let clamped = max(0.02, min(1.5, newSpeed))
+        switch type {
+        case .fixed:
+            break
+        case .orbit:
+            let sign: Float = speed < 0 ? -1.0 : 1.0
+            speed = clamped * sign
+            rawScript = String(format: "orbit radius=%.2f speed=%.2f height=%.2f phase=%.2f", radius, speed, height, phase)
+        case .wander:
+            speed = clamped
+            rawScript = String(format: "wander radius=%.2f speed=%.2f jitter=%.2f", radius, speed, wanderJitter)
+        case .spiral:
+            speed = clamped
+            rawScript = String(format: "spiral min=%.2f max=%.2f speed=%.2f vSpeed=%.2f vAmp=%.2f", minRadius, maxRadius, speed, verticalSpeed, verticalAmplitude)
+        case .lissajous:
+            xFreq = clamped
+            yFreq = clamped * 1.5
+            zFreq = clamped * 0.75
+            rawScript = String(format: "lissajous xR=%.2f yR=%.2f zR=%.2f xF=%.2f yF=%.2f zF=%.2f", xRadius, yRadius, zRadius, xFreq, yFreq, zFreq)
+        case .pendulum:
+            pendulumFreq = clamped
+            rawScript = String(format: "pendulum length=%.2f angle=%.1f freq=%.2f axis=%@", pendulumLength, pendulumAngleDeg, pendulumFreq, pendulumAxis)
+        case .flyby:
+            flybyDuration = max(1.0, 1.0 / clamped)
+            rawScript = String(format: "flyby start=[%.2f,%.2f,%.2f] end=[%.2f,%.2f,%.2f] duration=%.1f pause=%.1f", flybyStart.x, flybyStart.y, flybyStart.z, flybyEnd.x, flybyEnd.y, flybyEnd.z, flybyDuration, flybyPause)
+        case .customExpr:
+            type = .orbit
+            radius = max(0.20, effectiveRadius)
+            speed = clamped
+            rawScript = String(format: "orbit radius=%.2f speed=%.2f height=%.2f phase=%.2f", radius, speed, height, phase)
+        }
+    }
+
+    public func updateElevation(_ newY: Float) {
+        let clamped = max(-1.0, min(1.0, newY))
+        height = clamped
+        switch type {
+        case .fixed:
+            fixedPosition.y = clamped
+            rawScript = String(format: "static x=%.2f y=%.2f z=%.2f", fixedPosition.x, fixedPosition.y, fixedPosition.z)
+        case .orbit:
+            rawScript = String(format: "orbit radius=%.2f speed=%.2f height=%.2f phase=%.2f", radius, speed, height, phase)
+        case .flyby:
+            flybyStart.y = clamped
+            flybyEnd.y = clamped
+            rawScript = String(format: "flyby start=[%.2f,%.2f,%.2f] end=[%.2f,%.2f,%.2f] duration=%.1f pause=%.1f", flybyStart.x, flybyStart.y, flybyStart.z, flybyEnd.x, flybyEnd.y, flybyEnd.z, flybyDuration, flybyPause)
+        default:
+            break
+        }
+    }
 }

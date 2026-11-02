@@ -32,6 +32,8 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
         didSet { updateVolume() }
     }
     @Published public var isSolo: Bool = false
+    @Published public var isMotionPaused: Bool = false
+    @Published public var savedMotionScriptBeforePin: String? = nil
 
     @Published public var currentPosition: Vector3 = .zero
     @Published public var recentTrail: [Vector3] = []
@@ -60,6 +62,9 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
         self.source = source
         self.motionScript = motionScript
         self.volume = volume
+        if motionScript.type != .fixed {
+            self.savedMotionScriptBeforePin = motionScript.rawScript
+        }
         let initialPos = motionScript.position(at: 0)
         self.currentPosition = initialPos
 
@@ -97,9 +102,30 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
     }
 
     public func update(time: Float) {
-        let pos = motionScript.position(at: time)
-        self.currentPosition = pos
+        let pos: Vector3
+        if isMotionPaused {
+            pos = self.currentPosition
+        } else {
+            pos = motionScript.position(at: time)
+            self.currentPosition = pos
+        }
 
+        syncSpatialPosition(pos)
+
+        // Add to breadcrumb trail when moving
+        if !isMotionPaused && motionScript.type != .fixed {
+            recentTrail.append(pos)
+            if recentTrail.count > maxTrailPoints {
+                recentTrail.removeFirst()
+            }
+        }
+
+        // Smoothly track actual real-time acoustic RMS & Peak telemetry from the filter chain
+        let targetActivity = isMuted ? 0.0 : min(1.0, filterChain.lastRMS * 6.5 + filterChain.lastPeak * 0.45)
+        activityLevel = activityLevel * 0.72 + targetActivity * 0.28
+    }
+
+    public func syncSpatialPosition(_ pos: Vector3) {
         // Update 5-stage acoustic filter chain with 3D distance and front/back pinna cues
         filterChain.updateSpatialPosition(pos)
         proximityPercent = Int((filterChain.proximityFactor * 100.0).rounded())
@@ -113,16 +139,39 @@ public final class AudioLayer: Identifiable, ObservableObject, @unchecked Sendab
             let dynamicReverb = max(0.02, min(0.35, (dist - 0.18) * 0.14))
             mixingNode.reverbBlend = dynamicReverb
         }
+    }
 
-        // Add to breadcrumb trail
-        recentTrail.append(pos)
-        if recentTrail.count > maxTrailPoints {
-            recentTrail.removeFirst()
+    /// Pins the layer at a specific 3D coordinate while remembering its prior trajectory so it can be resumed.
+    public func pinAt(_ pos: Vector3) {
+        if motionScript.type != .fixed {
+            savedMotionScriptBeforePin = motionScript.rawScript
         }
+        let roundedPos = Vector3(
+            (pos.x * 100.0).rounded() / 100.0,
+            (pos.y * 100.0).rounded() / 100.0,
+            (pos.z * 100.0).rounded() / 100.0
+        )
+        currentPosition = roundedPos
+        motionScript = MotionScript.fixed(at: roundedPos)
+        recentTrail.removeAll()
+        syncSpatialPosition(roundedPos)
+        objectWillChange.send()
+    }
 
-        // Smoothly track actual real-time acoustic RMS & Peak telemetry from the filter chain
-        let targetActivity = isMuted ? 0.0 : min(1.0, filterChain.lastRMS * 6.5 + filterChain.lastPeak * 0.45)
-        activityLevel = activityLevel * 0.72 + targetActivity * 0.28
+    /// Restores the layer's saved motion script, or starts a gentle orbit at the current distance.
+    public func resumeSavedMotion() {
+        isMotionPaused = false
+        if let saved = savedMotionScriptBeforePin, !saved.starts(with: "static") {
+            let restored = MotionScript()
+            restored.parse(script: saved)
+            motionScript = restored
+        } else {
+            let r = max(0.22, currentPosition.horizontalDistance)
+            let restored = MotionScript.orbit(radius: r, speed: 0.15, height: currentPosition.y)
+            savedMotionScriptBeforePin = restored.rawScript
+            motionScript = restored
+        }
+        objectWillChange.send()
     }
 
     public func updateVolume() {

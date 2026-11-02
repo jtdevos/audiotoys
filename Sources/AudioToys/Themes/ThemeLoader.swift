@@ -1,18 +1,69 @@
 import Foundation
 
 public struct ThemeLoader {
-    public static func syncDefaultThemesToDisk(directory: URL) {
-        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    /// Writes default theme JSON files to disk only if they do not already exist
+    /// (unless `overwriteExisting` is explicitly set to `true`).
+    public static func syncDefaultThemesToDisk(directory: URL, overwriteExisting: Bool = false) {
+        let fm = FileManager.default
+        try? fm.createDirectory(at: directory, withIntermediateDirectories: true)
 
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
         for theme in ThemeLibrary.defaultThemes {
             let fileUrl = directory.appendingPathComponent("\(theme.id).json")
-            if let data = try? encoder.encode(theme) {
-                try? data.write(to: fileUrl)
+            if overwriteExisting || !fm.fileExists(atPath: fileUrl.path) {
+                if let data = try? encoder.encode(theme) {
+                    try? data.write(to: fileUrl)
+                }
             }
         }
+    }
+
+    @discardableResult
+    public static func saveTheme(_ theme: Theme, to directory: URL) -> Bool {
+        let fm = FileManager.default
+        try? fm.createDirectory(at: directory, withIntermediateDirectories: true)
+
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let fileUrl = directory.appendingPathComponent("\(theme.id).json")
+        guard let data = try? encoder.encode(theme) else { return false }
+        do {
+            try data.write(to: fileUrl, options: .atomic)
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    public static func resetTheme(withId id: String, in directory: URL) -> Theme? {
+        guard let defaultTheme = ThemeLibrary.defaultThemes.first(where: { $0.id == id }) else {
+            return nil
+        }
+        _ = saveTheme(defaultTheme, to: directory)
+        return defaultTheme
+    }
+
+    public static func captureTheme(base: Theme, activeLayers: [AudioLayer], reverb: ReverbEnvironmentPreset) -> Theme {
+        let layerDefs = activeLayers.map { layer in
+            LayerDefinition(
+                id: layer.id,
+                name: layer.name,
+                colorHex: layer.colorHex,
+                volume: layer.volume,
+                source: layer.source,
+                motionScript: layer.motionScript.rawScript
+            )
+        }
+        return Theme(
+            id: base.id,
+            title: base.title,
+            subtitle: base.subtitle,
+            moodDescription: base.moodDescription,
+            reverbPreset: reverb.rawValue,
+            layers: layerDefs
+        )
     }
 
     public static func loadThemes(from directory: URL) -> [Theme] {
@@ -43,7 +94,7 @@ public struct ThemeLoader {
                 ordered.append(def)
             }
         }
-        for (id, customTheme) in loadedById where !defaultIds.contains(id) {
+        for (id, customTheme) in loadedById.sorted(by: { $0.key < $1.key }) where !defaultIds.contains(id) {
             ordered.append(customTheme)
         }
         return ordered
