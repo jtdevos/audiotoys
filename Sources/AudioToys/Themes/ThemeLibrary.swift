@@ -355,6 +355,91 @@ public struct ThemeLibrary {
                         motionScript: "static x=0.34 y=0.10 z=-0.42"
                     )
                 ]
+            ),
+
+            // 9. Calm School Classroom (Mostly Silent Room, Soft Chalk on Slate & Occasional Cough)
+            Theme(
+                id: "quiet-classroom",
+                title: "Calm Classroom",
+                subtitle: "Quiet Study Hall • Soft Chalk on Slate, Sparse Page Rustle & Occasional Cough",
+                moodDescription: "A peaceful, mostly silent afternoon classroom. Soft calcium-carbonate chalk glides across the front slate blackboard, a student turns a notebook page at a nearby desk, a faint wall clock ticks, and an occasional muffled cough echoes softly across the room.",
+                reverbPreset: "Small Room",
+                layers: [
+                    LayerDefinition(
+                        name: "Soft Chalk on Blackboard",
+                        colorHex: "#E0FBFC",
+                        volume: 0.78,
+                        source: .audioFile(path: "Resources/Samples/chalk_writing.wav", isLooping: false, interval: 7.5),
+                        motionScript: "expr x=0.32*sin(0.28*t); y=0.10+0.04*cos(0.4*t); z=-0.58"
+                    ),
+                    LayerDefinition(
+                        name: "Occasional Distant Cough",
+                        colorHex: "#FFD166",
+                        volume: 0.50,
+                        source: .audioFile(path: "Resources/Samples/classroom_cough.wav", isLooping: false, interval: 18.0),
+                        motionScript: "static x=-0.72 y=-0.04 z=0.45"
+                    ),
+                    LayerDefinition(
+                        name: "Quiet Notebook Page Turn",
+                        colorHex: "#4ECDC4",
+                        volume: 0.48,
+                        source: .audioFile(path: "Resources/Samples/page_turning.wav", isLooping: false, interval: 13.5),
+                        motionScript: "static x=0.38 y=-0.12 z=-0.22"
+                    ),
+                    LayerDefinition(
+                        name: "Faint Wall Clock Tick",
+                        colorHex: "#98C1D9",
+                        volume: 0.26,
+                        source: .audioFile(path: "Resources/Samples/clock_tick.wav", isLooping: false, interval: 4.0),
+                        motionScript: "static x=-0.52 y=0.40 z=-0.65"
+                    )
+                ]
+            ),
+
+            // 10. Coffee Shop (Tinkling Glasses, Cash Register, Espresso Steam & Warm Murmur)
+            Theme(
+                id: "coffee-shop",
+                title: "Coffee Shop",
+                subtitle: "Neighborhood Café • Glasses Tinkling, Cash Register, Steam Wand & Conversations",
+                moodDescription: "Tucked into a corner booth at a cozy neighborhood café: porcelain cups and glasses tinkle with silver spoons, the counter cash register chimes as the drawer latches, an espresso wand steams milk, and warm unintelligible conversations murmur around the room.",
+                reverbPreset: "Medium Room",
+                layers: [
+                    LayerDefinition(
+                        name: "Glasses & Cups Tinkling",
+                        colorHex: "#FFD166",
+                        volume: 0.78,
+                        source: .audioFile(path: "Resources/Samples/cafe_glasses_clink.wav", isLooping: false, interval: 5.2),
+                        motionScript: "wander radius=0.52 speed=0.18 jitter=0.15"
+                    ),
+                    LayerDefinition(
+                        name: "Counter Cash Register",
+                        colorHex: "#06D6A0",
+                        volume: 0.68,
+                        source: .audioFile(path: "Resources/Samples/cafe_cash_register.wav", isLooping: false, interval: 11.5),
+                        motionScript: "static x=0.65 y=0.02 z=-0.50"
+                    ),
+                    LayerDefinition(
+                        name: "Warm Cafe Conversations",
+                        colorHex: "#F4A261",
+                        volume: 0.64,
+                        source: .audioFile(path: "Resources/Samples/cafe_murmur.wav", isLooping: true, interval: 0),
+                        motionScript: "orbit radius=0.78 speed=0.08 height=0.0 phase=0.8"
+                    ),
+                    LayerDefinition(
+                        name: "Espresso Steam Wand",
+                        colorHex: "#E76F51",
+                        volume: 0.60,
+                        source: .audioFile(path: "Resources/Samples/cafe_espresso_steam.wav", isLooping: false, interval: 9.5),
+                        motionScript: "static x=0.46 y=0.06 z=-0.65"
+                    ),
+                    LayerDefinition(
+                        name: "Corner Table Sketching",
+                        colorHex: "#4CC9F0",
+                        volume: 0.46,
+                        source: .audioFile(path: "Resources/Samples/page_turning.wav", isLooping: false, interval: 10.5),
+                        motionScript: "static x=-0.34 y=-0.10 z=-0.26"
+                    )
+                ]
             )
         ]
     }

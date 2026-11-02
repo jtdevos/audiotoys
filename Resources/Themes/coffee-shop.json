@@ -1,0 +1,79 @@
+{
+  "id" : "coffee-shop",
+  "layers" : [
+    {
+      "colorHex" : "#FFD166",
+      "id" : "glasses-cups-tinkling",
+      "motionScript" : "wander radius=0.52 speed=0.18 jitter=0.15",
+      "name" : "Glasses & Cups Tinkling",
+      "source" : {
+        "audioFile" : {
+          "interval" : 5.2,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/cafe_glasses_clink.wav"
+        }
+      },
+      "volume" : 0.78
+    },
+    {
+      "colorHex" : "#06D6A0",
+      "id" : "counter-cash-register",
+      "motionScript" : "static x=0.65 y=0.02 z=-0.50",
+      "name" : "Counter Cash Register",
+      "source" : {
+        "audioFile" : {
+          "interval" : 11.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/cafe_cash_register.wav"
+        }
+      },
+      "volume" : 0.68
+    },
+    {
+      "colorHex" : "#F4A261",
+      "id" : "warm-cafe-conversations",
+      "motionScript" : "orbit radius=0.78 speed=0.08 height=0.0 phase=0.8",
+      "name" : "Warm Cafe Conversations",
+      "source" : {
+        "audioFile" : {
+          "interval" : 0,
+          "isLooping" : true,
+          "path" : "Resources\/Samples\/cafe_murmur.wav"
+        }
+      },
+      "volume" : 0.64
+    },
+    {
+      "colorHex" : "#E76F51",
+      "id" : "espresso-steam-wand",
+      "motionScript" : "static x=0.46 y=0.06 z=-0.65",
+      "name" : "Espresso Steam Wand",
+      "source" : {
+        "audioFile" : {
+          "interval" : 9.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/cafe_espresso_steam.wav"
+        }
+      },
+      "volume" : 0.6
+    },
+    {
+      "colorHex" : "#4CC9F0",
+      "id" : "corner-table-sketching",
+      "motionScript" : "static x=-0.34 y=-0.10 z=-0.26",
+      "name" : "Corner Table Sketching",
+      "source" : {
+        "audioFile" : {
+          "interval" : 10.5,
+          "isLooping" : false,
+          "path" : "Resources\/Samples\/page_turning.wav"
+        }
+      },
+      "volume" : 0.46
+    }
+  ],
+  "moodDescription" : "Tucked into a corner booth at a cozy neighborhood café: porcelain cups and glasses tinkle with silver spoons, the counter cash register chimes as the drawer latches, an espresso wand steams milk, and warm unintelligible conversations murmur around the room.",
+  "reverbPreset" : "Medium Room",
+  "subtitle" : "Neighborhood Café • Glasses Tinkling, Cash Register, Steam Wand & Conversations",
+  "title" : "Coffee Shop"
+}
